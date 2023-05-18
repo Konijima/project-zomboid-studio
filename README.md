@@ -1,4 +1,5 @@
 # Project Zomboid Studio (PZStudio)
+[![npm version](https://badge.fury.io/js/pzstudio.svg)](https://badge.fury.io/js/pzstudio)
 
 Create and maintain **LUA** mods for **Project Zomboid** easily.
 
