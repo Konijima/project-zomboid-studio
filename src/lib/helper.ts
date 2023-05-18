@@ -1,7 +1,7 @@
-import path, { dirname, join, resolve } from "path";
-import { IProjectConfig } from "./project";
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFile, writeFileSync } from "fs";
 import { homedir } from "os";
+import { dirname, join, resolve } from "path";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "fs";
+import { IProjectConfig } from "./project";
 
 /**
  * Returns the current project working directory
