@@ -22,13 +22,17 @@ const templatePath = templateDir();
 copyFolderSync(templatePath, projectPath);
 
 // Copy mod template
-mkdirSync(join(projectPath, 'lua', modId, 'client'), { recursive: true });
-mkdirSync(join(projectPath, 'lua', modId, 'server'), { recursive: true });
-mkdirSync(join(projectPath, 'lua', modId, 'shared'), { recursive: true });
+const templatesPath = templatesDir();
 mkdirSync(join(projectPath, 'mods', modId), { recursive: true });
+copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
+
+// Prepare mod lua directory
+mkdirSync(join(projectPath, 'lua', modId), { recursive: true });
+copyFolderSync(join(templatesPath, 'lua'), join(projectPath, 'lua', modId));
+
+// Copy language template for EN
 mkdirSync(join(projectPath, 'translations', modId), { recursive: true });
-copyFolderSync(join(templatesDir(), 'mod'), join(projectPath, 'mods', modId));
-copyFolderSync(join(templatesDir(), 'language'), join(projectPath, 'translations', modId, 'EN'));
+copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
 
 // Update config
 const newProjectConfigPath = join(projectPath, 'project.json');
