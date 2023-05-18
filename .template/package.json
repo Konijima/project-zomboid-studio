@@ -1,12 +1,11 @@
 {
-  "name": "project-zomboid-studio",
-  "version": "1.0.0",
+  "name": "",
   "description": "",
+  "author": "",
+  "version": "1.0.0",
   "scripts": {
-    "clean": "",
-    "build": "",
-    "watch": ""
-  },
-  "author": "Konijima",
-  "license": "ISC"
+    "clean": "pzs clean",
+    "build": "pzs build",
+    "watch": "pzs watch"
+  }
 }
