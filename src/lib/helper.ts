@@ -1,6 +1,7 @@
-import { dirname, join } from "path";
+import path, { dirname, join, resolve } from "path";
 import { IProjectConfig } from "./project";
-import { copyFileSync, lstatSync, mkdirSync, readdirSync, statSync, writeFile, writeFileSync } from "fs";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFile, writeFileSync } from "fs";
+import { homedir } from "os";
 
 /**
  * Returns the current project working directory
@@ -85,4 +86,24 @@ export function copyFolderSync(from: string, to: string) {
             copyFolderSync(join(from, element), join(to, element));
         }
     });
+}
+
+/**
+ * Returns the store directory
+ * @returns {string} The store directory
+ */
+export function getStoreDir() {
+    return join(homedir(), '.pzstudio');
+}
+
+/**
+ * Returns the output directory
+ * @returns {string} The output directory
+ */
+export function getOutDir() {
+    let storePath = getStoreDir();
+    if (existsSync(storePath)) {
+        return resolve(readFileSync(storePath, 'utf8'));
+    }
+    return join(homedir(), 'Zomboid', 'Workshop');
 }
