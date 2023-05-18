@@ -1,6 +1,6 @@
 import { spawnSync } from "child_process";
 import { addHelp } from "../help";
-import { readProjectConfig } from "../helper";
+import { cloneCandle, projectDir, readProjectConfig } from "../helper";
 import { error, log, warn } from "../logger";
 
 addHelp('update', `Update your project with the latest version of PZStudio.
@@ -8,7 +8,7 @@ addHelp('update', `Update your project with the latest version of PZStudio.
     Usages:
         pzstudio update - Update your project with the latest version of PZStudio.`);
     
-export function updateCmd() {
+export async function updateCmd() {
     
     // Update PZStudio
     log(`Updating PZStudio...`);
@@ -26,6 +26,10 @@ export function updateCmd() {
         return;
     }
 
+    // Update candle
+    log(`Updating candle...`);
+    cloneCandle(projectDir());
+    
     // Update project
-    log(`Updating project...`);
+    // log(`Updating project...`);
 }

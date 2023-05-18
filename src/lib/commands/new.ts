@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateProjectConfig } from "../helper";
+import { cloneCandle, copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateProjectConfig } from "../helper";
 import { log } from "../logger";
 
 addHelp('new', `Create a new project.
@@ -57,6 +57,9 @@ export function newCmd(projectTitle: string, modId?: string) {
         description: '',
     };
     updateProjectConfig(newProjectConfigPath, newProjectConfig);
+
+    // Clone candle
+    cloneCandle(projectPath);
 
     // Done
     log(`The project '${projectTitle}' has been created at ${projectPath}`);
