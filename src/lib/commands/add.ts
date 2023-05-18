@@ -1,4 +1,4 @@
-import { mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import { expect } from "../expect";
 import { addHelp } from "../help";
@@ -35,16 +35,22 @@ export function addCmd(modName: string, modId?: string) {
 
     // Copy mod template
     const templatesPath = templatesDir();
-    mkdirSync(join(projectPath, 'mods', modId), { recursive: true });
-    copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
+    if (!existsSync(join(projectPath, 'mods', modId))) {
+        mkdirSync(join(projectPath, 'mods', modId), { recursive: true });
+        copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
+    }
 
     // Prepare mod lua directory
-    mkdirSync(join(projectPath, 'lua', modId), { recursive: true });
-    copyFolderSync(join(templatesPath, 'lua'), join(projectPath, 'lua', modId));
+    if (!existsSync(join(projectPath, 'lua', modId))) {
+        mkdirSync(join(projectPath, 'lua', modId), { recursive: true });
+        copyFolderSync(join(templatesPath, 'lua'), join(projectPath, 'lua', modId));
+    }
 
     // Copy language template for EN
-    mkdirSync(join(projectPath, 'translations', modId), { recursive: true });
-    copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
+    if (!existsSync(join(projectPath, 'translations', modId))) {
+        mkdirSync(join(projectPath, 'translations', modId), { recursive: true });
+        copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
+    }
 
     // Update config
     projectConfig.mods[modId] = {
