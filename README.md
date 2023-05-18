@@ -23,7 +23,8 @@ npm install -g pzstudio
 Create a new project.
 ```bash
 pzstudio new "<project-title>" "<mod-id>"
-# ex: pzstudio add "My Super Cool Mod" "my-super-cool-mod"
+# ex1: pzstudio add "My Super Cool Mod"
+# ex2: pzstudio add "My Super Cool Mod" "my-super-cool-mod"
 ```
 
 ### Help
@@ -46,8 +47,9 @@ pzstudio update
 ### Add Mod
 Add a mod to your project.
 ```bash
-pzstudio add "<mod-id>"
-# ex: pzstudio add "my-other-mod"
+pzstudio add "<mod-name>" "<mod-id>"
+# ex1: pzstudio add "My other mod"
+# ex2: pzstudio add "My other mod" "my-other-mod"
 ```
 
 ### Rename Mod
@@ -67,21 +69,22 @@ pzstudio delete "<mod-id>"
 ### Add Language
 Add a translation language.
 ```bash
-pzstudio lang "<language-code>"
-# ex: pzstudio lang "en"
+pzstudio lang "<mod-id>" "<language-code>"
+# ex: pzstudio lang "my-mod-1" "en"
 ```
 
 ### Copy Language
 Copy a translation language to an other language.
 ```bash
-pzstudio lang "<from-language-code>" "<to-language-code>"
-# ex: pzstudio lang "en" "fr"
+pzstudio lang "<mod-id>" "<from-language-code>" "<to-language-code>"
+# ex: pzstudio lang "my-mod-1" "en" "fr"
 ```
 
 ### OutDir
 Set your output directory. Default: `"<user-dir>/Zomboid/Workshop/"`
 ```bash
 pzstudio outdir "<output-dir-path>"
+# ex: pzstudio outdir "C:/Users/Konijima/Zomboid/Workshop"
 ```
 
 ### Clean
