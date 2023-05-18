@@ -16,74 +16,78 @@ import { watchCmd } from './commands/watch';
 import { error, log } from './logger';
 import { projectDir, workingDir } from './helper';
 
-terminal.clear();
-terminal.green(`Project Zomboid Studio v${version}`);
+(async function() {
 
-const command = {
-    name: cmd(),
-    params: args()
-};
+    terminal.clear();
+    terminal.green(`Project Zomboid Studio v${version}`);
 
-log('PZStudio Dir: ' + workingDir());
-log('Project Dir:  ' + projectDir());
+    const command = {
+        name: cmd(),
+        params: args()
+    };
 
-terminal.brightCyan(`\nRunning command [${command.name}] ${(command.params.length) ? `with params [${command.params.join(', ')}]` : ''}`);
-try {
-    switch (command.name) {
-        case 'add':
-            addCmd(arg(0) as string);
-            break;
-    
-        case 'build':
-            buildCmd();
-            break;
-    
-        case 'clean':
-            cleanCmd();
-            break;
-    
-        case 'delete':
-            deleteCmd(arg(0) as string);
-            break;
-            
-        case 'help':
-            helpCmd(arg(0) as string);
-            break;
+    log('PZStudio Dir: ' + workingDir());
+    log('Project Dir:  ' + projectDir());
 
-        case 'lang':
-            langCmd(arg(0) as string, arg(1) as string);
-            break;
-    
-        case 'new':
-            newCmd(arg(0) as string, arg(1) as string);
-            break;
-    
-        case 'outdir':
-            outdirCmd(arg(0) as string);
-            break;
-    
-        case 'rename':
-            renameCmd(arg(0) as string, arg(1) as string);
-            break;
-    
-        case 'update':
-            updateCmd();
-            break;
-    
-        case 'watch':
-            watchCmd();
-            break;
-    
-        case undefined:
-            helpCmd();
-            break;
+    terminal.brightCyan(`\nRunning command [${command.name}] ${(command.params.length) ? `with params [${command.params.join(', ')}]` : ''}`);
+    try {
+        switch (command.name) {
+            case 'add':
+                addCmd(arg(0) as string);
+                break;
+        
+            case 'build':
+                buildCmd();
+                break;
+        
+            case 'clean':
+                cleanCmd();
+                break;
+        
+            case 'delete':
+                deleteCmd(arg(0) as string);
+                break;
+                
+            case 'help':
+                helpCmd(arg(0) as string);
+                break;
 
-        default:
-            throw new Error(`Unknown command [${command.name}]`);
+            case 'lang':
+                langCmd(arg(0) as string, arg(1) as string);
+                break;
+        
+            case 'new':
+                newCmd(arg(0) as string, arg(1) as string);
+                break;
+        
+            case 'outdir':
+                outdirCmd(arg(0) as string);
+                break;
+        
+            case 'rename':
+                renameCmd(arg(0) as string, arg(1) as string);
+                break;
+        
+            case 'update':
+                await updateCmd();
+                break;
+        
+            case 'watch':
+                watchCmd();
+                break;
+        
+            case undefined:
+                helpCmd();
+                break;
+
+            default:
+                throw new Error(`Unknown command [${command.name}]`);
+        }
     }
-}
-catch (e) {
-    error(e);
-}
+    catch (e) {
+        error(e);
+    }
 
-terminal('\n');
+    terminal('\n');
+
+})();
