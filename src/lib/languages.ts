@@ -127,7 +127,7 @@ const Languages = {
     TR: {
         code: 'TR',
         name: 'Turkish',
-        charset: 'Cp1254',
+        charset: 'windows-1254',
     },
     UA: {
         code: 'UA',
