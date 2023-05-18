@@ -1,3 +1,5 @@
+import { dirname, join } from "path";
+
 export type ArgType = 'string' | 'number' | 'boolean' | 'string|undefined' | 'number|undefined' | 'boolean|undefined';
 
 /**
@@ -39,9 +41,25 @@ export function arg(index: number) {
 }
 
 /**
+ * Returns the arguments passed to the program
+ * @returns {string[]} The arguments passed to the program
+ */
+export function processArgs() {
+    return process.argv.slice(2);
+}
+
+/**
+ * Returns the current project working directory
+ * @returns {string} The current working directory
+ */
+export function projectDir() {
+    return process.cwd();
+}
+
+/**
  * Returns the current working directory
  * @returns {string} The current working directory
  */
-export function dir() {
-    return process.cwd();
+export function workingDir() {
+    return join(dirname(__dirname), 'lib');
 }
