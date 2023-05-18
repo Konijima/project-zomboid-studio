@@ -1,7 +1,9 @@
 import { homedir } from "os";
 import { dirname, join, resolve } from "path";
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "fs";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "fs";
 import { IProjectConfig } from "./project";
+import { spawnSync } from "child_process";
+import { error, log } from "./logger";
 
 /**
  * Returns the current project working directory
@@ -121,4 +123,23 @@ export function getOutDir() {
         return resolve(readFileSync(storePath, 'utf8'));
     }
     return join(homedir(), 'Zomboid', 'Workshop');
+}
+
+/**
+ * Clone the candle repository
+ */
+export function cloneCandle(directoryPath?: string) {
+    rmSync(join(directoryPath, '.candle'), { recursive: true, force: true });
+
+    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', '.candle'], {
+        cwd: directoryPath,
+        shell: true, 
+        stdio: 'pipe'
+    });
+    if (cloneResult.status !== 0) {
+        error(`Failed to clone Candle!`);
+    }
+    else {
+        log(`Candle cloned successfully!`);
+    }
 }
