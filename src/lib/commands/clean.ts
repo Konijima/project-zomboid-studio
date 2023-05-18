@@ -25,6 +25,8 @@ export function cleanCmd() {
         log(`Cleaning output directory at '${outPath}'...`);
         rmSync(outPath, { recursive: true });
     }
+    else
+        throw new Error(`Output directory at '${outPath}' does not exist!`);
 
     const endTime = performance.now();
     log(`Clean complete in ${((endTime - startTime) / 1000).toFixed(2)}s!`);
