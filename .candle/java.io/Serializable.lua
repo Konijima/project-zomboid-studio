@@ -1,5 +1,0 @@
---- @meta
-
---- @class Serializable
-Serializable = {};
-
