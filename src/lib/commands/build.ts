@@ -1,11 +1,16 @@
-import { execProcessAsync } from "../execProcess";
 import { addHelp } from "../help";
+import { readProjectConfig } from "../helper";
 
 addHelp('build', `Build your project and update your output directory with your project.
 
     Usages:
         pzstudio build - Builds your project and updates the output directory.`);
 
-export async function buildCmd() {
+export function buildCmd() {
+    throw new Error('Not implemented yet!');
     
+    // Check if we are in a project directory
+    if (!readProjectConfig()) {
+        throw new Error('You must execute this command within a project directory!');
+    }
 }
