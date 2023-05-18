@@ -89,6 +89,21 @@ export function copyFolderSync(from: string, to: string) {
 }
 
 /**
+ * Returns the files in a directory recursively
+ * @param {string} dir The directory to search
+ * @param {string[]} filelist The file list
+ * @returns {string[]} The files in the directory
+ */
+export function getFilesRecursively(dir: string, filelist: string[] = []) {
+    readdirSync(dir).forEach(file => {
+        filelist = statSync(join(dir, file)).isDirectory()
+            ? getFilesRecursively(join(dir, file), filelist)
+            : filelist.concat(join(dir, file));
+    });
+    return filelist;
+}
+
+/**
  * Returns the store directory
  * @returns {string} The store directory
  */
