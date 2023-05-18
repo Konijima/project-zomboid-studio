@@ -6,9 +6,9 @@ addHelp('build', `Build your project and update your output directory with your 
     Usages:
         pzstudio build - Builds your project and updates the output directory.`);
 
-export function buildCmd() {
     throw new Error('Not implemented yet!');
     
+export async function buildCmd() {
     // Check if we are in a project directory
     if (!readProjectConfig()) {
         throw new Error('You must execute this command within a project directory!');

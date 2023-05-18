@@ -37,7 +37,7 @@ import { projectDir, workingDir } from './helper';
                 break;
         
             case 'build':
-                buildCmd();
+                await buildCmd();
                 break;
         
             case 'clean':
