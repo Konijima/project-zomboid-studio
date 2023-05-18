@@ -178,28 +178,33 @@ export function generateModInfoText(modId: string, config: IProjectConfig) {
     const lines: string[] = [];
 
     if (config.mods[modId]) {
+        // id
         lines.push(`id=${modId}`);
+
+        // name
         if (config.mods[modId].name) lines.push(`name=${config.mods[modId].name}`);
+
+        // description
         if (config.mods[modId].description) lines.push(`description=${config.mods[modId].description}`);
-        if (config.mods[modId].poster) {
-            if (typeof config.mods[modId].poster === 'string') {
-                lines.push(`poster=${config.mods[modId].poster}`);
-            }
-            if (typeof config.mods[modId].poster === 'object')  {
-                (config.mods[modId].poster as string[]).forEach(poster => {
-                    lines.push(`poster=${poster}`);
-                });
-            }
-        }
-        else {
-            lines.push(`poster=poster.png`);
-        }
+
+        // poster
+        if (typeof config.mods[modId].poster === 'object') (config.mods[modId].poster as string[]).forEach(poster => lines.push(`poster=${poster}`));
+        else if (typeof config.mods[modId].poster === 'string') lines.push(`poster=${config.mods[modId].poster}`);
+        else lines.push(`poster=poster.png`);
+
+        // icon
         lines.push(`icon=${config.mods[modId].icon ?? 'icon.png'}`);
+
+        // url
         if (config.mods[modId].url) lines.push(`url=${config.mods[modId].url}`);
+
+        // version
         if (config.mods[modId].versionMin) lines.push(`versionMin=${config.mods[modId].versionMin}`);
         if (config.mods[modId].versionMax) lines.push(`versionMax=${config.mods[modId].versionMax}`);
+
+        // require
         if (typeof config.mods[modId].require === 'string') lines.push(`require=${config.mods[modId].require}`);
-        if (typeof config.mods[modId].require === 'object') lines.push(`require=${(config.mods[modId].require as string[]).join(',')}`);
+        else if (typeof config.mods[modId].require === 'object') lines.push(`require=${(config.mods[modId].require as string[]).join(',')}`);
     }
 
     return lines.join('\n');
