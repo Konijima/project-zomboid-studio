@@ -24,7 +24,7 @@ export function addCmd(modName: string, modId?: string) {
     // Prepare mod id
     modId = modId ?? formatTitleToId(modName);
 
-    const projectPath = join(projectDir());
+    const projectPath = projectDir();
     const projectConfigPath = join(projectPath, 'project.json');
     const projectConfig = readProjectConfig(projectConfigPath);
 
