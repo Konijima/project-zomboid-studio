@@ -143,3 +143,64 @@ export function cloneCandle(directoryPath?: string) {
         log(`Candle cloned successfully!`);
     }
 }
+
+/**
+ * Generate the workshop text
+ * @param config The project config
+ * @returns {string} The workshop text
+ */
+export function generateWorkshopText(config: IProjectConfig) {
+    const lines: string[] = [];
+
+    lines.push(`version=1`);
+    if (config.workshop.id) lines.push(`id=${config.workshop.id}`);
+    if (config.title) lines.push(`title=${config.title}`);
+    if (config.workshop.tags) lines.push(`tags=${config.workshop.tags.join(',')}`);
+    if (config.workshop.visibility) lines.push(`visibility=${config.workshop.visibility}`);
+
+    const workshopDescriptionPath = join(projectDir(), 'workshop', 'description.txt');
+    if (existsSync(workshopDescriptionPath)) {
+        readFileSync(workshopDescriptionPath, { encoding: 'utf-8' }).split('\n').forEach(line => {
+            lines.push(`description=${line}`);
+        });
+    }
+    
+    return lines.join('\n');
+}
+
+/**
+ * Generate the mod.info text
+ * @param modId The mod id
+ * @param config The project config
+ * @returns {string} The mod.info text
+ */
+export function generateModInfoText(modId: string, config: IProjectConfig) {
+    const lines: string[] = [];
+
+    if (config.mods[modId]) {
+        lines.push(`id=${modId}`);
+        if (config.mods[modId].name) lines.push(`name=${config.mods[modId].name}`);
+        if (config.mods[modId].description) lines.push(`description=${config.mods[modId].description}`);
+        if (config.mods[modId].poster) {
+            if (typeof config.mods[modId].poster === 'string') {
+                lines.push(`poster=${config.mods[modId].poster}`);
+            }
+            if (typeof config.mods[modId].poster === 'object')  {
+                (config.mods[modId].poster as string[]).forEach(poster => {
+                    lines.push(`poster=${poster}`);
+                });
+            }
+        }
+        else {
+            lines.push(`poster=poster.png`);
+        }
+        lines.push(`icon=${config.mods[modId].icon ?? 'icon.png'}`);
+        if (config.mods[modId].url) lines.push(`url=${config.mods[modId].url}`);
+        if (config.mods[modId].versionMin) lines.push(`versionMin=${config.mods[modId].versionMin}`);
+        if (config.mods[modId].versionMax) lines.push(`versionMax=${config.mods[modId].versionMax}`);
+        if (typeof config.mods[modId].require === 'string') lines.push(`require=${config.mods[modId].require}`);
+        if (typeof config.mods[modId].require === 'object') lines.push(`require=${(config.mods[modId].require as string[]).join(',')}`);
+    }
+
+    return lines.join('\n');
+}
