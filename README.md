@@ -26,6 +26,12 @@ pzstudio new "<project-title>" "<mod-id>"
 # ex: pzstudio add "My Super Cool Mod" "my-super-cool-mod"
 ```
 
+### Help
+Displays help information.
+```bash
+pzstudio help "<command>"
+```
+
 <br>
 
 > **IMPORTANT**  
@@ -91,7 +97,7 @@ pzstudio build
 ```
 
 ### Watch
-Build your project using the watch command to watch for changes and keep your output directory up-to-date.
+Watch for changes and keep your output directory synced.
 ```bash
 pzstudio watch
 ```

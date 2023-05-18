@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
-  "type": "module",
+  "type": "commonjs",
   "bin": {
     "pzstudio": "./dist/index.js",
     "pzs": "./dist/index.js"
@@ -28,7 +28,8 @@
     "project-zomboid-studio"
   ],
   "devDependencies": {
-    "@types/node": "^18.7.5"
+    "@types/node": "^18.7.5",
+    "@types/terminal-kit": "^2.5.1"
   },
   "dependencies": {
     "del-cli": "^4.0.1",
