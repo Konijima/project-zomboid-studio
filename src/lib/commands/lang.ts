@@ -4,8 +4,8 @@ import { addHelp } from "../help";
 addHelp('lang', `Add or copy a translation language.
 
     Usages:
-        lang <lang>          - Add a translation language.
-        lang <lang> <toLang> - Copy a translation language to an other language.`);
+        pzstudio lang <lang>          - Add a translation language.
+        pzstudio lang <lang> <toLang> - Copy a translation language to an other language.`);
     
 export function langCmd(lang: string, toLang?: string) {
     expect('param [lang]', lang, 'string');

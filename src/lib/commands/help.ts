@@ -12,14 +12,14 @@ const fullHelp = `Available commands:
     new            - Create a new project.
     outdir         - Set your output directory.
     rename         - Rename a mod from your project.
-    update         - Update a project.
+    update         - Update your project with the latest version of PZStudio.
     watch          - Watch for changes and keep your output directory synced.`;
 
 addHelp('help', `Displays help information.
 
     Usages:
-        help           - Displays general help information.
-        help <command> - Displays help information for a specific command.`);
+        pzstudio help           - Displays general help information.
+        pzstudio help <command> - Displays help information for a specific command.`);
 
 export function helpCmd(command?: string) {
     expect('param [command]', command, 'string|undefined');
