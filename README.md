@@ -15,23 +15,29 @@ Start creating more powerful and versatile mods for Project Zomboid today!
 
 <br>
 
+# Requirements:
+- [NodeJS LTS](https://nodejs.org/en)
+
+<br>
+
 # Commands:
 
-### Install
+## Install
 Install **Project Zomboid Studio** globally.
 ```bash
 npm install -g pzstudio
 ```
 
-### New Project
+## New Project
 Create a new project.
+> You can create a project anywhere on your computer, but **DO NOT** create it inside your Mods and Workshop directory. The build command will generate the actual mod into the Workshop directory or any output directory you set.
 ```bash
 pzstudio new "<project-title>" "<mod-id>"
 # ex1: pzstudio add "My Super Cool Mod"
 # ex2: pzstudio add "My Super Cool Mod" "my-super-cool-mod"
 ```
 
-### Help
+## Help
 Displays help information.
 ```bash
 pzstudio help "<command>"
@@ -39,71 +45,73 @@ pzstudio help "<command>"
 
 <br>
 
-> **IMPORTANT**  
-> The following commands must be executed from within a **pzstudio project** directory.
+## **IMPORTANT**  
+> The following commands must be executed from within a **PZStudio Project** directory.
 
-### Update
-Update a project.
+<br>
+
+## Update
+Update **PZStudio**, **Candle** and the project.
 ```bash
 pzstudio update
 ```
 
-### Add Mod
-Add a mod to your project.
+## Add Mod
+Add an other mod to your project.
 ```bash
 pzstudio add "<mod-name>" "<mod-id>"
 # ex1: pzstudio add "My other mod"
 # ex2: pzstudio add "My other mod" "my-other-mod"
 ```
 
-### Rename Mod
+## Rename Mod
 Rename a mod from your project.
 ```bash
 pzstudio rename "<mod-id>" "<new-mod-id>"
 # ex: pzstudio rename "my-mod" "my-super-mod"
 ```
 
-### Delete Mod
+## Delete Mod
 Delete a mod from your project.
 ```bash
 pzstudio delete "<mod-id>"
 # ex: pzstudio delete "my-mod"
 ```
 
-### Add Language
+## Add Language
 Add a translation language.
 ```bash
 pzstudio lang "<mod-id>" "<language-code>"
 # ex: pzstudio lang "my-mod-1" "en"
 ```
 
-### Copy Language
+## Copy Language
 Copy a translation language to an other language.
 ```bash
 pzstudio lang "<mod-id>" "<from-language-code>" "<to-language-code>"
 # ex: pzstudio lang "my-mod-1" "en" "fr"
 ```
 
-### OutDir
+## OutDir
 Set your output directory. Default: `"<user-dir>/Zomboid/Workshop/"`
 ```bash
 pzstudio outdir "<output-dir-path>"
 # ex: pzstudio outdir "C:/Users/Konijima/Zomboid/Workshop"
 ```
 
-### Clean
+## Clean
 Clean your output directory from the current built project.
 ```bash
 pzstudio clean
 ```
 
-### Build
+## Build
 Build your project and update your output directory with your project.
 ```bash
 pzstudio build
 ```
 
-### Watch
+## Watch
 Watch for changes and keep your output directory synced.
 ```bash
 pzstudio watch
