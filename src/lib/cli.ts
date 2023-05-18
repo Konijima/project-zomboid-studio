@@ -24,7 +24,7 @@ const command = {
 };
 
 log('PZStudio Dir: ' + workingDir());
-log('Project Dir: ' + projectDir());
+log('Project Dir:  ' + projectDir());
 
 terminal.yellow(`\nRunning command [${command.name}] ${(command.params.length) ? `with params [${command.params.join(', ')}]` : ''}`);
 try {
