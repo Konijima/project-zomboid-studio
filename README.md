@@ -1,18 +1,21 @@
-# Project Zomboid Studio (PZStudio)
+![Banner](https://github.com/Konijima/project-zomboid-studio/blob/master/.images/pzstudio-banner.png?raw=true)
+
 [![npm version](https://badge.fury.io/js/pzstudio.svg)](https://badge.fury.io/js/pzstudio)
 
-Create and maintain **LUA** mods for **Project Zomboid** easily.
+This is an intuitive and efficient solution to create and maintain LUA mods for Project Zomboid with greater ease. The tool allows for effortless structuring of mods, reducing time and complexity typically associated with mod creation. Key features include the ability to 'Build' and 'Watch' for changes, enhancing workflow and enabling dynamic mod adjustments.
+
+For seamless coding and guidance, we leverage the [asledgehammer/Candle](https://github.com/asledgehammer/Candle) library, offering intelligent code completion (IntelliSense) for LUA.
+
+Start creating more powerful and versatile mods for Project Zomboid today!
 
 <br>
 
-## Features:
-- Structure your mods easily.
-- **Build** and **Watch** for changes.
-- Uses [asledgehammer/Candle](https://github.com/asledgehammer/Candle) for  intelisense.
+## VSCode Extentions:
+- [EmmyLua](https://marketplace.visualstudio.com/items?itemName=tangzx.emmylua) - Optional, add EmmyLua to your VSCode.
 
 <br>
 
-## Commands:
+# Commands:
 
 ### Install
 Install **Project Zomboid Studio** globally.
