@@ -13,7 +13,17 @@
   },
   "author": "Konijima",
   "contributors": [
-    "Jab"
+    {
+      "name": "asledgehammer",
+      "email": "asledgehammer@protonmail.com",
+      "url": "https://github.com/asledgehammer"
+    }
+  ],
+  "funding": [
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/konijima"
+    }
   ],
   "license": "Apache License Version 2.0",
   "scripts": {
