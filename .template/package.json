@@ -1,11 +1,11 @@
 {
-  "name": "",
+  "name": "pz-studio",
   "description": "",
-  "author": "",
+  "author": "Konijima",
   "version": "1.0.0",
   "scripts": {
-    "clean": "pzs clean",
-    "build": "pzs build",
-    "watch": "pzs watch"
+    "clean": "pzstudio clean",
+    "build": "pzstudio build",
+    "watch": "pzstudio watch"
   }
 }

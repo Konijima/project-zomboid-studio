@@ -1,7 +1,7 @@
-import { fork } from 'child_process';
-import { workingDir } from './args';
 import { join } from 'path';
+import { fork } from 'child_process';
 import { log } from './logger';
+import { workingDir } from './helper';
 
 /**
  * Executes a process and returns the stdout as a string.
