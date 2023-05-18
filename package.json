@@ -2,10 +2,11 @@
   "name": "pzstudio",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/lib/compiler.js",
+  "main": "./dist/index.js",
   "type": "module",
   "bin": {
-    "pzstudio": "./dist/index.js"
+    "pzstudio": "./dist/index.js",
+    "pzs": "./dist/index.js"
   },
   "publishConfig": {
     "tag": "latest"
@@ -16,9 +17,9 @@
   ],
   "license": "Apache License Version 2.0",
   "scripts": {
-    "clean": "",
-    "build": "",
-    "watch": ""
+    "clean": "del-cli --force ./dist",
+    "build": "npm run clean && tsc",
+    "watch": "npm run clean && tsc --watch"
   },
   "keywords": [
     "pzstudio",
@@ -27,14 +28,11 @@
     "project-zomboid-studio"
   ],
   "devDependencies": {
-    "@types/node": "^18.7.5",
-    "@typescript-eslint/eslint-plugin": "^5.34.0",
-    "@typescript-eslint/parser": "^5.34.0",
-    "eslint": "^8.22.0",
-    "typescript": "^5.0.4"
+    "@types/node": "^18.7.5"
   },
   "dependencies": {
-    "chalk": "^5.0.1",
-    "del-cli": "^4.0.1"
+    "del-cli": "^4.0.1",
+    "terminal-kit": "^3.0.0",
+    "typescript": "^5.0.4"
   }
 }
