@@ -1,7 +1,7 @@
 // @ts-ignore
 import { version } from '../../package.json';
 import { terminal } from 'terminal-kit';
-import { arg, args, cmd, projectDir, workingDir } from './args';
+import { arg, args, cmd } from './args';
 import { addCmd } from './commands/add';
 import { buildCmd } from './commands/build';
 import { cleanCmd } from './commands/clean';
@@ -14,6 +14,7 @@ import { renameCmd } from './commands/rename';
 import { updateCmd } from './commands/update';
 import { watchCmd } from './commands/watch';
 import { error, log } from './logger';
+import { projectDir, workingDir } from './helper';
 
 terminal.clear();
 terminal.green(`Project Zomboid Studio v${version}`);
