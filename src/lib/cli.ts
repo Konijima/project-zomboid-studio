@@ -73,6 +73,10 @@ try {
             watchCmd();
             break;
     
+        case undefined:
+            helpCmd();
+            break;
+
         default:
             throw new Error(`Unknown command [${command.name}]`);
     }
