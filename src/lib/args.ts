@@ -1,5 +1,3 @@
-import { dirname, join } from "path";
-
 export type ArgType = 'string' | 'number' | 'boolean' | 'string|undefined' | 'number|undefined' | 'boolean|undefined';
 
 /**
