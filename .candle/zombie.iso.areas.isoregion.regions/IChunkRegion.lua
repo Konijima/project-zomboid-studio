@@ -1,0 +1,5 @@
+--- @meta
+
+--- @class IChunkRegion
+IChunkRegion = {};
+

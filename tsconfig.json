@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "lib": [
+        "esnext",
+        "DOM"
+      ],
+      "outDir": "dist",
+      "rootDir": "src",
+      "strict": true,
+      "skipLibCheck": true,
+      "importHelpers": true,
+      "noImplicitAny": true,
+      "esModuleInterop": true,
+      "strictNullChecks": false,
+      "resolveJsonModule": true,
+      "strictFunctionTypes": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true,
+      "declaration": true,
+      "declarationDir": "dts",
+      "typeRoots": [
+        "./node_modules/@types"
+      ]
+    },
+    "include": [
+      "./src/**/*.ts"
+    ],
+    "exclude": [
+      "./node_modules"
+    ]
+  }

@@ -1,0 +1,112 @@
+{
+    "$schema": "pzstudio.schema.json",
+    "title": "JSON schema for Project Zomboid Studio project.json files",
+    "type": "object",
+    "properties": {
+        "title": {
+            "description": "The mod title.",
+            "type": "string"
+        },
+        "authors": {
+            "description": "The mod author(s). Use a string or an array of string.",
+            "type": ["string", "array"],
+            "items": {
+                "type": "string"
+            }
+        },
+        "workshop": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The steam workshop generated id, don't forget to copy/paste it here after uploading the first time.",
+                    "type": "integer"
+                },
+                "visibility": {
+                    "description": "The mod visibility on steam workshop.",
+                    "type": "string",
+                    "enum": ["public", "friendsOnly", "private", "unlisted"]
+                },
+                "tags": {
+                    "description": "The mod workshop tags.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["Build 40", "Build 41", "Balance", "Building", "Clothing/Armor", "Food", "Framework", "Hardmode", "Interface", "Items", "Language/Translation", "Literature", "Map", "Military", "Misc", "Models", "Multiplayer", "Pop Culture", "Realistic", "Silly/Fun", "Textures", "Traits", "Vehicles", "Weapons"]
+                    }
+                },
+                "excludes": {
+                    "description": "List of mod ids to exclude from the workshop.",
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "visibility",
+                "tags"
+            ]
+        },
+        "mods": {
+            "description": "List of mods in this projects.",
+            "patternProperties": {
+                "^.*$": {
+                    "$ref": "#/$defs/mod"
+                }
+            }
+        },
+        "required": [
+            "title",
+            "authors",
+            "workshop",
+            "mods"
+        ]
+    },
+    "$defs": {
+        "mod": {
+            "description": "The mod unique id.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The mod visible name.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The mod visible description.",
+                    "type": "string"
+                },
+                "poster": {
+                    "description": "The mod poster image.",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "The mod icon image.",
+                    "type": "string"
+                },
+                "require": {
+                    "description": "The mod ids required by this mod.",
+                    "type": ["string", "array"],
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "pack": {
+                    "description": "",
+                    "type": "string"
+                },
+                "tiledef": {
+                    "description": "",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "description"
+            ]
+        }
+    }
+}
