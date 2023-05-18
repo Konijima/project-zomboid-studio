@@ -78,8 +78,13 @@
                     "type": "string"
                 },
                 "poster": {
-                    "description": "The mod poster image.",
-                    "type": "string"
+                    "description": "The mod poster image(s).",
+                    "type": ["string", "array"],
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
                 },
                 "icon": {
                     "description": "The mod icon image.",
@@ -99,6 +104,18 @@
                     "type": "string"
                 },
                 "tiledef": {
+                    "description": "",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "",
+                    "type": "string"
+                },
+                "versionMin": {
+                    "description": "",
+                    "type": "string"
+                },
+                "versionMax": {
                     "description": "",
                     "type": "string"
                 }

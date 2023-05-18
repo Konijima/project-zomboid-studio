@@ -3,9 +3,10 @@
     "title": "",
     "authors": [],
     "workshop": {
-        "id": 0,
         "visibility": "public",
-        "tags": [],
+        "tags": [
+            "Build 41"
+        ],
         "excludes": []
     },
     "mods": {}

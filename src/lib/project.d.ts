@@ -16,11 +16,14 @@ export interface IWorshopConfig {
 export interface IModConfig {
     name: string,
     description: string,
-    poster?: string,
+    poster?: string | string[],
     icon?: string,
     require?: string | string[],
     pack?: string
     tiledef?: string,
+    url?: string,
+    versionMin?: string,
+    versionMax?: string,
 }
 
 export interface IProjectConfig {
