@@ -1,9 +1,9 @@
-import { mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
-import { title } from "process";
 import { expect } from "../expect";
 import { addHelp } from "../help";
 import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateProjectConfig } from "../helper";
+import { log } from "../logger";
 
 addHelp('new', `Create a new project.
 
@@ -11,18 +11,24 @@ addHelp('new', `Create a new project.
         pzstudio new <projectTitle>         - Create a new project with the given title and automatically formatted mod id.
         pzstudio new <projectTitle> <modId> - Create a new project with the given title and mod id.`);
 
-export async function newCmd(projectTitle: string, modId?: string) {
+export function newCmd(projectTitle: string, modId?: string) {
+    // Check if we are in a project directory
     if (readProjectConfig()) {
         throw new Error('You cannot execute this command within a project directory!');
     }
 
+    // Validate params
     expect('param [projectTitle]', projectTitle, 'string');
     expect('param [modId]', modId, 'string|undefined');
 
+    // Prepare mod id
     modId = modId ?? formatTitleToId(projectTitle);
 
     // Prepare directory
     const projectPath = join(projectDir(), projectTitle);
+    if (existsSync(projectPath)) {
+        throw new Error(`The project '${projectTitle}' already exists!`);
+    }
     mkdirSync(projectPath, { recursive: true });
 
     // Copy template
@@ -45,11 +51,13 @@ export async function newCmd(projectTitle: string, modId?: string) {
     // Update config
     const newProjectConfigPath = join(projectPath, 'project.json');
     const newProjectConfig = readProjectConfig(newProjectConfigPath);
-
     newProjectConfig.title = projectTitle;
     newProjectConfig.mods[modId] = {
         name: projectTitle,
         description: '',
     };
     updateProjectConfig(newProjectConfigPath, newProjectConfig);
+
+    // Done
+    log(`The project '${projectTitle}' has been created at ${projectPath}`);
 }
