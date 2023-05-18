@@ -32,6 +32,7 @@
     "@types/terminal-kit": "^2.5.1"
   },
   "dependencies": {
+    "chokidar": "^3.5.3",
     "del-cli": "^4.0.1",
     "terminal-kit": "^3.0.0",
     "typescript": "^5.0.4"

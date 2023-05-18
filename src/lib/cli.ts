@@ -73,7 +73,7 @@ import { projectDir, workingDir } from './helper';
                 break;
         
             case 'watch':
-                watchCmd();
+                await watchCmd();
                 break;
         
             case undefined:
