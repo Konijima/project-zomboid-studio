@@ -1,21 +1,12 @@
 {
-    "$schema": "project.schema.json",
-    "title": "Test Mod",
-    "authors": [
-        "Konijima"
-    ],
+    "$schema": "https://raw.githubusercontent.com/Konijima/project-zomboid-studio/master/pzstudio.schema.json",
+    "title": "",
+    "authors": [],
     "workshop": {
         "id": 0,
         "visibility": "public",
         "tags": [],
         "excludes": []
     },
-    "mods": {
-        "test-mod": {
-            "name": "Test Mod",
-            "version": "1.0.0",
-            "description": "This is a test mod.",
-            "require": []
-        }
-    }
+    "mods": {}
 }

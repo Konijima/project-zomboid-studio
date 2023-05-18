@@ -19,22 +19,20 @@ Install **Project Zomboid Studio** globally.
 npm install -g pzstudio
 ```
 
+### New Project
+Create a new project.
+```
+pzstudio new "<project-title>" "<mod-id>"
+```
+
 <br>
 
 > The following commands must be executed from within a **pzstudio project** directory.
-
-<br>
 
 ### Update
 Update a project.
 ```
 pzstudio update
-```
-
-### New Project
-Create a new project.
-```
-pzstudio new "<project-title>" "<mod-id>"
 ```
 
 ### Add Mod
