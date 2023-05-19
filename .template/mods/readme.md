@@ -1,5 +1,5 @@
 # Mods directory
-Add your assets into your `mods/mod-id/` directory.
+Add your assets into your `mods/mod-id/media/` directory.
 
 **Add:**  
 models, txt scripts, xml, images, etc

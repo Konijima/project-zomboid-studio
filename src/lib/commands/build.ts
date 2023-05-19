@@ -43,7 +43,7 @@ export async function buildCmd() {
         writeFileSync(join(modPath, 'mod.info'), generateModInfoText(modId, projectConfig));
 
         // Copy the mod
-        log(`Copying mod '${modId}' assets...`);
+        log(`Copying mod '${modId}' media...`);
         copyFolderSync(join(projectPath, 'mods', modId), modPath)
 
         // Copy the lua
