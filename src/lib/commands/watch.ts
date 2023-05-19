@@ -1,11 +1,10 @@
+import { resolve } from "path";
 import { watch } from "chokidar";
+import { terminal } from "terminal-kit";
+import { spawnSync } from "child_process";
 import { addHelp } from "../help";
 import { projectDir, readProjectConfig } from "../helper";
 import { error, log } from '../logger'
-import { on } from "events";
-import { spawn, spawnSync } from "child_process";
-import { resolve } from "path";
-import { terminal } from "terminal-kit";
 
 addHelp('watch', `Watch your project and update your output directory with your project.
 

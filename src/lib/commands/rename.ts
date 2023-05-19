@@ -1,8 +1,8 @@
 import { join } from "path";
+import { existsSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
 import { formatTitleToId, getFilesRecursively, projectDir, readProjectConfig, updateProjectConfig } from "../helper";
-import { existsSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { log } from "../logger";
 
 addHelp('rename', `Rename a mod in your project.

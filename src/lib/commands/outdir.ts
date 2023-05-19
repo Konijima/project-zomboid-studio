@@ -1,7 +1,7 @@
-import { expect } from "../expect";
-import { addHelp } from "../help";
 import { resolve } from "path";
 import { existsSync, readFileSync, writeFileSync } from "fs";
+import { expect } from "../expect";
+import { addHelp } from "../help";
 import { getStoreDir } from "../helper";
 import { log } from "../logger";
 

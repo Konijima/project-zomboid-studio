@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
+import { existsSync, mkdirSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
 import { cloneCandle, copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateProjectConfig } from "../helper";

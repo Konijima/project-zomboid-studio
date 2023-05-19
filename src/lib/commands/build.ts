@@ -1,7 +1,7 @@
 import { join } from "path";
 import { cpSync, mkdirSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
-import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig, templateDir } from "../helper";
+import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
 import { log } from "../logger";
 
 addHelp('build', `Build your project and update your output directory with your project.

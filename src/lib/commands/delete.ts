@@ -3,7 +3,7 @@ import { existsSync, rmSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
 import { log } from "../logger";
-import { formatTitleToId, projectDir, readProjectConfig, updateProjectConfig } from "../helper";
+import { projectDir, readProjectConfig, updateProjectConfig } from "../helper";
 
 addHelp('delete', `Delete a mod from your project.
 
