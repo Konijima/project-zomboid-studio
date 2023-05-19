@@ -1,6 +1,6 @@
 {
   "name": "pzstudio",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "./dist/index.js",
   "type": "commonjs",
@@ -10,6 +10,13 @@
   },
   "publishConfig": {
     "tag": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Konijima/project-zomboid-studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Konijima/project-zomboid-studio/issues"
   },
   "author": "Konijima",
   "contributors": [
