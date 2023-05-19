@@ -11,12 +11,14 @@ Start creating more powerful and versatile mods for Project Zomboid today!
 <br>
 
 ## VSCode Extentions:
-- [EmmyLua](https://marketplace.visualstudio.com/items?itemName=tangzx.emmylua) - Optional, add EmmyLua to your VSCode.
+- [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) - The Lua language server provides various language features for Lua to make development easier and faster. With around half a million installs on Visual Studio Code, it is the most popular extension for Lua language support. 
+- [EmmyLua](https://marketplace.visualstudio.com/items?itemName=tangzx.emmylua) - Add EmmyLua to your VSCode.
+- [ZedScript](https://marketplace.visualstudio.com/items?itemName=asledgehammer.zedscript-vscode) - A third-party VSCode extension for supporting ZedScript, a scripting format for creating Items, Recipes, etc.
 
 <br>
 
-# Requirements:
-- [NodeJS LTS](https://nodejs.org/en)
+## Requirements:
+- [NodeJS LTS](https://nodejs.org/en) - Require NodeJS and NPM to use the CLI commands.
 
 <br>
 
