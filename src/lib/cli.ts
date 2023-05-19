@@ -13,23 +13,36 @@ import { outdirCmd } from './commands/outdir';
 import { renameCmd } from './commands/rename';
 import { updateCmd } from './commands/update';
 import { watchCmd } from './commands/watch';
-import { error, log } from './logger';
-import { projectDir, workingDir } from './helper';
+import { error, info, log, warn } from './logger';
+import { projectDir } from './helper';
+import { spawnSync } from 'child_process';
 
 (async function() {
 
     terminal.clear();
-    terminal.green(`Project Zomboid Studio v${version}`);
+    terminal.green(`Project Zomboid Studio v${version}\n`);
 
     const command = {
         name: cmd(),
         params: args()
     };
 
-    log('PZStudio Dir: ' + workingDir());
+    //log('PZStudio Dir: ' + workingDir());
     log('Project Dir:  ' + projectDir());
 
-    terminal.brightCyan(`\nRunning command [${command.name}] ${(command.params.length) ? `with params [${command.params.join(', ')}]` : ''}`);
+    // Check for updates
+    const versions = JSON.parse(spawnSync('npm', ['view', 'pzstudio', 'versions', '--json'], { shell: true, stdio: 'pipe' }).stdout.toString());
+    if (version) {
+        const latestVersion = versions[versions.length - 1];
+        if (version !== latestVersion) {
+            warn(`\n** New version of PZStudio available! **`);
+            warn(`Execute 'pzstudio update' to update to the latest version.`);
+            warn(`Version: ${version} < ${latestVersion}\n`);
+        }
+    }
+
+    // Execute command
+    info(`Executing command [${command.name}] ${(command.params.length) ? `with params [${command.params.join(', ')}]` : ''}`);
     try {
         switch (command.name) {
             case 'add':

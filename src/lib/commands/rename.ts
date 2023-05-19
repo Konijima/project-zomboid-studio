@@ -38,15 +38,20 @@ export function renameCmd(oldModId: string, newModId: string) {
     }
 
     // Rename mod
-    if (existsSync(join(projectPath, 'mods', oldModId))) {
+    if (existsSync(join(projectPath, 'mods', oldModId)))
         renameSync(join(projectPath, 'mods', oldModId), join(projectPath, 'mods', newModId));
-    }
-    if (existsSync(join(projectPath, 'lua', oldModId))) {
-        renameSync(join(projectPath, 'lua', oldModId), join(projectPath, 'lua', newModId));
-    }
-    if (existsSync(join(projectPath, 'translations', oldModId))) {
+    
+    if (existsSync(join(projectPath, 'lua', 'client', oldModId)))
+        renameSync(join(projectPath, 'lua', 'client', oldModId), join(projectPath, 'lua', 'client', newModId));
+
+    if (existsSync(join(projectPath, 'lua', 'server', oldModId)))
+        renameSync(join(projectPath, 'lua', 'server', oldModId), join(projectPath, 'lua', 'server', newModId));
+
+    if (existsSync(join(projectPath, 'lua', 'shared', oldModId)))
+        renameSync(join(projectPath, 'lua', 'shared', oldModId), join(projectPath, 'lua', 'shared', newModId));
+    
+    if (existsSync(join(projectPath, 'translations', oldModId)))
         renameSync(join(projectPath, 'translations', oldModId), join(projectPath, 'translations', newModId));
-    }
 
     // Update code
     [].concat(

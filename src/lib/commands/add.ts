@@ -12,8 +12,12 @@ addHelp('add', `Add a mod to your project.
         pzstudio add <modName> <modId> - Add a mod to your project.`);
     
 export function addCmd(modName: string, modId?: string) {
+    const projectPath = projectDir();
+    const projectConfig = readProjectConfig();
+    const templatesPath = templatesDir();
+
     // Check if we are in a project directory
-    if (!readProjectConfig()) {
+    if (!projectConfig) {
         throw new Error('You must execute this command within a project directory!');
     }
 
@@ -24,40 +28,28 @@ export function addCmd(modName: string, modId?: string) {
     // Prepare mod id
     modId = modId ?? formatTitleToId(modName);
 
-    const projectPath = projectDir();
-    const projectConfigPath = join(projectPath, 'project.json');
-    const projectConfig = readProjectConfig(projectConfigPath);
-
     // Check if mod already exists
-    if (projectConfig.mods[modId]) {
+    if (projectConfig.mods[modId] || existsSync(join(projectPath, 'mods', modId))) {
         throw new Error(`A mod with id '${modId}' already exists!`);
     }
 
-    // Copy mod template
-    const templatesPath = templatesDir();
-    if (!existsSync(join(projectPath, 'mods', modId))) {
-        mkdirSync(join(projectPath, 'mods', modId), { recursive: true });
-        copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
-    }
+    // Add mod directory
+    copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
 
     // Prepare mod lua directory
-    if (!existsSync(join(projectPath, 'lua', modId))) {
-        mkdirSync(join(projectPath, 'lua', modId), { recursive: true });
-        copyFolderSync(join(templatesPath, 'lua'), join(projectPath, 'lua', modId));
-    }
+    mkdirSync(join(projectPath, 'lua', 'client', modId), { recursive: true });
+    mkdirSync(join(projectPath, 'lua', 'server', modId), { recursive: true });
+    mkdirSync(join(projectPath, 'lua', 'shared', modId), { recursive: true });
 
     // Copy language template for EN
-    if (!existsSync(join(projectPath, 'translations', modId))) {
-        mkdirSync(join(projectPath, 'translations', modId), { recursive: true });
-        copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
-    }
+    copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
 
     // Update config
     projectConfig.mods[modId] = {
         name: modName,
         description: '',
     };
-    updateProjectConfig(projectConfigPath, projectConfig);
+    updateProjectConfig(join(projectPath, 'project.json'), projectConfig);
 
     // Done
     log(`Added mod '${modName}' with id '${modId}'`);

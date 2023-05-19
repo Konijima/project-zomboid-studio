@@ -8,10 +8,12 @@ import { log } from "../logger";
 addHelp('new', `Create a new project.
 
     Usages:
-        pzstudio new <projectTitle>         - Create a new project with the given title and automatically formatted mod id.
-        pzstudio new <projectTitle> <modId> - Create a new project with the given title and mod id.`);
-
-export function newCmd(projectTitle: string, modId?: string) {
+    pzstudio new <projectTitle>         - Create a new project with the given title and automatically formatted mod id.
+    pzstudio new <projectTitle> <modId> - Create a new project with the given title and mod id.`);
+    
+    export function newCmd(projectTitle: string, modId?: string) {
+    const templatePath = templateDir();
+    
     // Check if we are in a project directory
     if (readProjectConfig()) {
         throw new Error('You cannot execute this command within a project directory!');
@@ -24,28 +26,25 @@ export function newCmd(projectTitle: string, modId?: string) {
     // Prepare mod id
     modId = modId ?? formatTitleToId(projectTitle);
 
-    // Prepare directory
+    // Check if project already exists
     const projectPath = join(projectDir(), projectTitle);
     if (existsSync(projectPath)) {
         throw new Error(`The project '${projectTitle}' already exists!`);
     }
-    mkdirSync(projectPath, { recursive: true });
 
     // Copy template
-    const templatePath = templateDir();
     copyFolderSync(templatePath, projectPath);
 
     // Copy mod template
     const templatesPath = templatesDir();
-    mkdirSync(join(projectPath, 'mods', modId), { recursive: true });
     copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
 
     // Prepare mod lua directory
-    mkdirSync(join(projectPath, 'lua', modId), { recursive: true });
-    copyFolderSync(join(templatesPath, 'lua'), join(projectPath, 'lua', modId));
+    mkdirSync(join(projectPath, 'lua', 'client', modId), { recursive: true });
+    mkdirSync(join(projectPath, 'lua', 'server', modId), { recursive: true });
+    mkdirSync(join(projectPath, 'lua', 'shared', modId), { recursive: true });
 
     // Copy language template for EN
-    mkdirSync(join(projectPath, 'translations', modId), { recursive: true });
     copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
 
     // Update config

@@ -1,7 +1,7 @@
 import { join } from "path";
 import { cpSync, mkdirSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
-import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
+import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig, templateDir } from "../helper";
 import { log } from "../logger";
 
 addHelp('build', `Build your project and update your output directory with your project.
@@ -21,10 +21,6 @@ export async function buildCmd() {
 
     const outPath = join(getOutDir(), projectConfig.title);
     const projectPath = projectDir();
-
-    // Create the output directory
-    log(`Creating output directory at '${outPath}'...`);
-    mkdirSync(join(outPath, 'Contents', 'mods'), { recursive: true });
 
     // Copy the workshop preview.png
     log(`Copying workshop 'preview.png'...`)
@@ -53,14 +49,13 @@ export async function buildCmd() {
         // Copy the lua
         log(`Copying mod '${modId}' lua...`);
         const luaPath = join(modPath, 'media', 'lua');
-        mkdirSync(luaPath, { recursive: true });
-        copyFolderSync(join(projectPath, 'lua', modId), luaPath);
+        copyFolderSync(join(projectPath, 'lua', 'client', modId), join(luaPath, 'client', modId));
+        copyFolderSync(join(projectPath, 'lua', 'server', modId), join(luaPath, 'server', modId));
+        copyFolderSync(join(projectPath, 'lua', 'shared', modId), join(luaPath, 'shared', modId));
 
         // Copy the translations
         log(`Copying mod '${modId}' translations...`);
-        const translationPath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-        mkdirSync(translationPath, { recursive: true });
-        copyFolderSync(join(projectPath, 'translations', modId), translationPath);
+        copyFolderSync(join(projectPath, 'translations', modId), join(modPath, 'media', 'lua', 'shared', 'Translate'));
     }
 
     const endTime = performance.now();

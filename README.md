@@ -2,9 +2,9 @@
 
 [![npm version](https://badge.fury.io/js/pzstudio.svg)](https://badge.fury.io/js/pzstudio) 
 
-This is an intuitive and efficient solution to create and maintain LUA mods for Project Zomboid with greater ease. The tool allows for effortless structuring of mods, reducing time and complexity typically associated with mod creation. Key features include the ability to 'Build' and 'Watch' for changes, enhancing workflow and enabling dynamic mod adjustments.
+This is an intuitive and efficient solution to create and maintain Lua mods for Project Zomboid with greater ease. The tool allows for effortless structuring of mods, reducing time and complexity typically associated with mod creation. Key features include the ability to 'Build' and 'Watch' for changes, enhancing workflow and enabling dynamic mod adjustments.
 
-For seamless coding and guidance, we leverage the [asledgehammer/Candle](https://github.com/asledgehammer/Candle) library, offering intelligent code completion (IntelliSense) for LUA.
+For seamless coding and guidance, we leverage the [asledgehammer/Candle](https://github.com/asledgehammer/Candle) library, offering intelligent code completion (IntelliSense) for Lua.
 
 Start creating more powerful and versatile mods for Project Zomboid today!
 

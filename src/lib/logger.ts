@@ -5,7 +5,15 @@ import { terminal } from 'terminal-kit';
  * @param message 
  */
 export function log(message: any) {
-    terminal.white('\n', (typeof message === 'string') ? message : JSON.stringify(message));
+    terminal.white((typeof message === 'string') ? message : JSON.stringify(message), '\n');
+}
+
+/**
+ * Logs a message to the console as an information.
+ * @param message
+ */
+export function info(message: any) {
+    terminal.brightCyan((typeof message === 'string') ? message : JSON.stringify(message), '\n');
 }
 
 /**
@@ -13,7 +21,7 @@ export function log(message: any) {
  * @param message
  */
 export function warn(message: any) {
-    terminal.yellow('\n', (typeof message === 'string') ? message : JSON.stringify(message));
+    terminal.yellow((typeof message === 'string') ? message : JSON.stringify(message), '\n');
 }
 
 /**
