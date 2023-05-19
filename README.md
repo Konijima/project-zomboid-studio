@@ -1,6 +1,6 @@
 ![Banner](https://github.com/Konijima/project-zomboid-studio/blob/master/.images/pzstudio-banner.png?raw=true)
 
-[![npm version](https://badge.fury.io/js/pzstudio.svg)](https://badge.fury.io/js/pzstudio)
+[![npm version](https://badge.fury.io/js/pzstudio.svg)](https://badge.fury.io/js/pzstudio) 
 
 This is an intuitive and efficient solution to create and maintain LUA mods for Project Zomboid with greater ease. The tool allows for effortless structuring of mods, reducing time and complexity typically associated with mod creation. Key features include the ability to 'Build' and 'Watch' for changes, enhancing workflow and enabling dynamic mod adjustments.
 
@@ -118,3 +118,10 @@ Watch for changes and keep your output directory synced.
 ```bash
 pzstudio watch
 ```
+
+<br><br><br>
+
+# I'm *sleepy*...
+Support this project by fueling me with coffee.
+
+<a href='https://ko-fi.com/P5P2KI3EY' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
