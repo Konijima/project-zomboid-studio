@@ -1,7 +1,6 @@
-import { spawnSync } from "child_process";
 import { addHelp } from "../help";
-import { cloneCandle, projectDir, readProjectConfig } from "../helper";
-import { error, log, warn } from "../logger";
+import { projectDir, readProjectConfig, updateCandle, updateEvents } from "../helper";
+import { warn } from "../logger";
 
 addHelp('update', `Update your project with the latest version of PZStudio.
 
@@ -11,14 +10,14 @@ addHelp('update', `Update your project with the latest version of PZStudio.
 export async function updateCmd() {
     
     // Update PZStudio
-    log(`Updating PZStudio...`);
-    const updateResult = spawnSync('npm', ['install', '-g', 'pzstudio'], { shell: true, stdio: 'pipe' });
-    if (updateResult.status !== 0) {
-        error(`Failed to update PZStudio!`);
-    }
-    else {
-        log(`PZStudio updated successfully!`);
-    }
+    // log(`Updating PZStudio...`);
+    // const updateResult = spawnSync('npm', ['install', '-g', 'pzstudio'], { shell: true, stdio: 'pipe' });
+    // if (updateResult.status !== 0) {
+    //     error(`Failed to update PZStudio!`);
+    // }
+    // else {
+    //     log(`PZStudio updated successfully!`);
+    // }
 
     // Check if we are in a project directory
     if (!readProjectConfig()) {
@@ -27,9 +26,11 @@ export async function updateCmd() {
     }
 
     // Update candle
-    log(`Updating candle...`);
-    cloneCandle(projectDir());
+    updateCandle(projectDir());
     
+    // Update LuaEvents
+    await updateEvents(projectDir());
+
     // Update project
     // log(`Updating project...`);
 }

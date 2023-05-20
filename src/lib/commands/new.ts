@@ -2,7 +2,7 @@ import { join } from "path";
 import { existsSync, mkdirSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { cloneCandle, copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateProjectConfig } from "../helper";
+import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateCandle, updateEvents, updateProjectConfig } from "../helper";
 import { log } from "../logger";
 
 addHelp('new', `Create a new project.
@@ -57,8 +57,9 @@ addHelp('new', `Create a new project.
     };
     updateProjectConfig(newProjectConfigPath, newProjectConfig);
 
-    // Clone candle
-    cloneCandle(projectPath);
+    // Update candle and events
+    updateCandle(projectPath);
+    updateEvents(projectPath);
 
     // Done
     log(`The project '${projectTitle}' has been created at ${projectPath}`);

@@ -13,15 +13,15 @@ addHelp('outdir', `Change the output directory of your project.
 export function outdirCmd(newOutDir: string) {
     expect('param [newOutDir]', newOutDir, 'string');
 
-    let storePath = getStoreDir();
-    
     // resolve the path
     newOutDir = resolve(newOutDir);
-
+    
     // check if the new path exists
     if (!existsSync(newOutDir)) {
         throw new Error(`The output directory "${newOutDir}" does not exist.`);
     }
+
+    let storePath = getStoreDir();
 
     // check if the new path is the same as the old one
     if (existsSync(storePath)) {

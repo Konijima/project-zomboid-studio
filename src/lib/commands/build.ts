@@ -44,18 +44,18 @@ export async function buildCmd() {
 
         // Copy the mod
         log(`Copying mod '${modId}' media...`);
-        copyFolderSync(join(projectPath, 'mods', modId), modPath)
+        copyFolderSync(join(projectPath, 'mods', modId), modPath, true)
 
         // Copy the lua
         log(`Copying mod '${modId}' lua...`);
         const luaPath = join(modPath, 'media', 'lua');
-        copyFolderSync(join(projectPath, 'lua', 'client', modId), join(luaPath, 'client', modId));
-        copyFolderSync(join(projectPath, 'lua', 'server', modId), join(luaPath, 'server', modId));
-        copyFolderSync(join(projectPath, 'lua', 'shared', modId), join(luaPath, 'shared', modId));
+        copyFolderSync(join(projectPath, 'lua', 'client', modId), join(luaPath, 'client', modId), true);
+        copyFolderSync(join(projectPath, 'lua', 'server', modId), join(luaPath, 'server', modId), true);
+        copyFolderSync(join(projectPath, 'lua', 'shared', modId), join(luaPath, 'shared', modId), true);
 
         // Copy the translations
         log(`Copying mod '${modId}' translations...`);
-        copyFolderSync(join(projectPath, 'translations', modId), join(modPath, 'media', 'lua', 'shared', 'Translate'));
+        copyFolderSync(join(projectPath, 'translations', modId), join(modPath, 'media', 'lua', 'shared', 'Translate'), true);
     }
 
     const endTime = performance.now();
