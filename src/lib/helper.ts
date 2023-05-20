@@ -1,8 +1,9 @@
 import { homedir } from "os";
-import { dirname, join, resolve } from "path";
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "fs";
-import { IProjectConfig } from "./project";
+import { request } from "https";
 import { spawnSync } from "child_process";
+import { dirname, join, resolve } from "path";
+import { copyFileSync, createWriteStream, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, statSync, writeFileSync } from "fs";
+import { IProjectConfig } from "./project";
 import { error, log } from "./logger";
 
 /**
@@ -79,15 +80,23 @@ export function formatTitleToId(title: string) {
  * @param {string} from The source folder
  * @param {string} to The destination folder
  */
-export function copyFolderSync(from: string, to: string) {
+export function copyFolderSync(from: string, to: string, ignoreDotFiles: boolean = false) {
     mkdirSync(to, { recursive: true });
-    readdirSync(from).forEach(element => {
-        if (lstatSync(join(from, element)).isFile()) {
-            copyFileSync(join(from, element), join(to, element));
-        } else {
-            copyFolderSync(join(from, element), join(to, element));
+    const files = readdirSync(from)
+    for (const file of files) {
+        if (ignoreDotFiles && file.startsWith('.')) {
+            continue;
         }
-    });
+        const current = lstatSync(join(from, file));
+        if (current.isDirectory()) {
+            copyFolderSync(join(from, file), join(to, file), ignoreDotFiles);
+        } else if (current.isSymbolicLink()) {
+            const symlink = readlinkSync(join(from, file));
+            writeFileSync(join(to, file), symlink);
+        } else {
+            copyFileSync(join(from, file), join(to, file));
+        }
+    }
 }
 
 /**
@@ -127,11 +136,15 @@ export function getOutDir() {
 
 /**
  * Clone the candle repository
+ * @see https://github.com/asledgehammer/Candle
+ * @param directoryPath The directory path
  */
-export function cloneCandle(directoryPath?: string) {
-    rmSync(join(directoryPath, '.candle'), { recursive: true, force: true });
-
-    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', '.candle'], {
+export function updateCandle(directoryPath?: string) {
+    log(`Updating candle...`);
+    
+    rmSync(join(directoryPath, '.addons', 'candle'), { recursive: true, force: true });
+    
+    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', join('.addons', 'candle')], {
         cwd: directoryPath,
         shell: true, 
         stdio: 'pipe'
@@ -142,6 +155,21 @@ export function cloneCandle(directoryPath?: string) {
     else {
         log(`Candle cloned successfully!`);
     }
+}
+
+/**
+ * Update the event documentation
+ * @see https://github.com/demiurgeQuantified/PZEventDoc
+ * @param directoryPath The directory path
+ */
+export async function updateEvents(directoryPath?: string) {
+    log(`Updating Events...`);
+
+    mkdirSync(join(directoryPath, '.addons'), { recursive: true });
+    rmSync(join(directoryPath, '.addons', 'events'), { recursive: true, force: true });
+
+    await require('download')('https://github.com/demiurgeQuantified/PZEventDoc/releases/latest/download/Events.lua', join(directoryPath, '.addons', 'events'));
+    log("Events downloaded successfully!");
 }
 
 /**
