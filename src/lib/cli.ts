@@ -1,7 +1,7 @@
 // @ts-ignore
 import { version } from '../../package.json';
 import { terminal } from 'terminal-kit';
-import { arg, args, cmd } from './args';
+import { spawnSync } from 'child_process';
 import { addCmd } from './commands/add';
 import { buildCmd } from './commands/build';
 import { cleanCmd } from './commands/clean';
@@ -13,9 +13,9 @@ import { outdirCmd } from './commands/outdir';
 import { renameCmd } from './commands/rename';
 import { updateCmd } from './commands/update';
 import { watchCmd } from './commands/watch';
+import { arg, args, cmd } from './args';
 import { error, info, log, warn } from './logger';
 import { projectDir } from './helper';
-import { spawnSync } from 'child_process';
 
 (async function() {
 
@@ -35,8 +35,8 @@ import { spawnSync } from 'child_process';
     if (version) {
         const latestVersion = versions[versions.length - 1];
         if (version !== latestVersion) {
-            warn(`\n** New version of PZStudio available! **`);
-            warn(`Execute 'pzstudio update' to update to the latest version.`);
+            warn(`\n** New version of PZStudio is available! **`);
+            warn(`Execute 'npm i -g pzstudio' to update to the latest version.`);
             warn(`Version: ${version} < ${latestVersion}\n`);
         }
     }

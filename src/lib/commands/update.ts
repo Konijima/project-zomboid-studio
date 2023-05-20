@@ -2,10 +2,10 @@ import { addHelp } from "../help";
 import { projectDir, readProjectConfig, updateCandle, updateEvents } from "../helper";
 import { warn } from "../logger";
 
-addHelp('update', `Update your project with the latest version of PZStudio.
+addHelp('update', `Update your project addons (candle, events).
 
     Usages:
-        pzstudio update - Update your project with the latest version of PZStudio.`);
+        pzstudio update - Update your project addons.`);
     
 export async function updateCmd() {
     
