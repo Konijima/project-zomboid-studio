@@ -415,6 +415,7 @@ export async function watchCmd() {
         })
         .on('error', error);
 
+    // Watch Project.json
     let projectReady = false;
     watch(join(projectDir(), 'project.json'), watcherOptions)
         .on('ready', () => {
