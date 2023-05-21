@@ -4,27 +4,29 @@
 
 This is an intuitive and efficient solution to create and maintain Lua mods for Project Zomboid with greater ease. The tool allows for effortless structuring of mods, reducing time and complexity typically associated with mod creation. Key features include the ability to 'Build' and 'Watch' for changes, enhancing workflow and enabling dynamic mod adjustments.
 
-For seamless coding and guidance, we leverage the [asledgehammer/Candle](https://github.com/asledgehammer/Candle) library, offering intelligent code completion (IntelliSense) for Lua.
+For seamless coding and guidance, we leverage the [asledgehammer/Candle](https://github.com/asledgehammer/Candle) and [demiurgeQuantified/PZEventDoc](https://github.com/demiurgeQuantified/PZEventDoc) libraries, offering intelligent code completion (IntelliSense) for Lua.
 
 Start creating more powerful and versatile mods for Project Zomboid today!
 
 <br>
 
 ## VSCode Extentions:
-- [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) - The Lua language server provides various language features for Lua to make development easier and faster. With around half a million installs on Visual Studio Code, it is the most popular extension for Lua language support. 
+- [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) - The Lua language server provides various language features for Lua to make development easier and faster. With around half a million installs on Visual Studio Code, it is the most popular extension for Lua language support.
+
 - [ZedScript](https://marketplace.visualstudio.com/items?itemName=asledgehammer.zedscript-vscode) - A third-party VSCode extension for supporting ZedScript, a scripting format for creating Items, Recipes, etc.
 
 <br>
 
 ## Requirements:
+- [Git](https://git-scm.com/) - Require Git to clone repositories.
 - [NodeJS LTS](https://nodejs.org/en) - Require NodeJS and NPM to use the CLI commands.
 
 <br>
 
 # Commands:
 
-## Install
-Install **Project Zomboid Studio** globally.
+## Install & Update
+Install or update **Project Zomboid Studio** globally.
 ```bash
 npm install -g pzstudio
 ```
