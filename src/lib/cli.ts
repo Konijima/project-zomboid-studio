@@ -46,7 +46,7 @@ import { projectDir } from './helper';
     try {
         switch (command.name) {
             case 'add':
-                addCmd(arg(0) as string);
+                await addCmd(arg(0) as string);
                 break;
         
             case 'build':
@@ -54,31 +54,31 @@ import { projectDir } from './helper';
                 break;
         
             case 'clean':
-                cleanCmd();
+                await cleanCmd();
                 break;
         
             case 'delete':
-                deleteCmd(arg(0) as string);
+                await deleteCmd(arg(0) as string);
                 break;
                 
             case 'help':
-                helpCmd(arg(0) as string);
+                await helpCmd(arg(0) as string);
                 break;
 
             case 'lang':
-                langCmd(arg(0) as string, arg(1) as string);
+                await langCmd(arg(0) as string, arg(1) as string);
                 break;
         
             case 'new':
-                newCmd(arg(0) as string, arg(1) as string);
+                await newCmd(arg(0) as string, arg(1) as string);
                 break;
         
             case 'outdir':
-                outdirCmd(arg(0) as string);
+                await outdirCmd(arg(0) as string);
                 break;
         
             case 'rename':
-                renameCmd(arg(0) as string, arg(1) as string);
+                await renameCmd(arg(0) as string, arg(1) as string);
                 break;
         
             case 'update':
@@ -90,7 +90,7 @@ import { projectDir } from './helper';
                 break;
         
             case undefined:
-                helpCmd();
+                await helpCmd();
                 break;
 
             default:

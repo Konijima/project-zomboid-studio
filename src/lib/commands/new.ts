@@ -1,9 +1,9 @@
 import { join } from "path";
-import { existsSync, mkdirSync } from "fs";
+import { existsSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, templatesDir, updateCandle, updateEvents, updateProjectConfig } from "../helper";
-import { log } from "../logger";
+import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, updateCandle, updateEvents, updateProjectConfig } from "../helper";
+import { info, log } from "../logger";
 
 addHelp('new', `Create a new project.
 
@@ -11,8 +11,9 @@ addHelp('new', `Create a new project.
     pzstudio new <projectTitle>         - Create a new project with the given title and automatically formatted mod id.
     pzstudio new <projectTitle> <modId> - Create a new project with the given title and mod id.`);
     
-    export function newCmd(projectTitle: string, modId?: string) {
-    const templatePath = templateDir();
+export async function newCmd(projectTitle: string, modId?: string) {
+    const templateProjectPath = templateDir('project');
+    const templateModPath = templateDir('mod');
     
     // Check if we are in a project directory
     if (readProjectConfig()) {
@@ -24,7 +25,7 @@ addHelp('new', `Create a new project.
     expect('param [modId]', modId, 'string|undefined');
 
     // Prepare mod id
-    modId = modId ?? formatTitleToId(projectTitle);
+    modId = modId ?? projectTitle;
 
     // Check if project already exists
     const projectPath = join(projectDir(), projectTitle);
@@ -33,21 +34,15 @@ addHelp('new', `Create a new project.
     }
 
     // Copy template
-    copyFolderSync(templatePath, projectPath);
+    log(`- Creating project '${projectTitle}'...`);
+    copyFolderSync(templateProjectPath, projectPath);
 
     // Copy mod template
-    const templatesPath = templatesDir();
-    copyFolderSync(join(templatesPath, 'mod'), join(projectPath, 'mods', modId));
-
-    // Prepare mod lua directory
-    mkdirSync(join(projectPath, 'lua', 'client', modId), { recursive: true });
-    mkdirSync(join(projectPath, 'lua', 'server', modId), { recursive: true });
-    mkdirSync(join(projectPath, 'lua', 'shared', modId), { recursive: true });
-
-    // Copy language template for EN
-    copyFolderSync(join(templatesPath, 'language'), join(projectPath, 'translations', modId, 'EN'));
+    log(`- Creating mod '${modId}'...`);
+    copyFolderSync(templateModPath, join(projectPath, modId));
 
     // Update config
+    log(`- Updating project config...`);
     const newProjectConfigPath = join(projectPath, 'project.json');
     const newProjectConfig = readProjectConfig(newProjectConfigPath);
     newProjectConfig.title = projectTitle;
@@ -59,8 +54,8 @@ addHelp('new', `Create a new project.
 
     // Update candle and events
     updateCandle(projectPath);
-    updateEvents(projectPath);
+    await updateEvents(projectPath);
 
     // Done
-    log(`The project '${projectTitle}' has been created at ${projectPath}`);
+    info(`The project '${projectTitle}' has been created at '${projectPath}'`);
 }

@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "clean": "pzstudio clean",
-    "build": "pzstudio build",
-    "watch": "pzstudio watch",
-    "update": "pzstudio update"
-  }
-}

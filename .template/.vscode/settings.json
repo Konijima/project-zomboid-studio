@@ -1,7 +1,0 @@
-{
-    "Lua.completion.requireSeparator": "/",
-    "Lua.workspace.library": [
-        "./.addons/**/*.lua",
-        "change/to/absolute/path/to/steam/library/ProjectZomboid/media/lua/**/*.lua"
-    ]
-}
