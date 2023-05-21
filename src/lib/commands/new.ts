@@ -2,7 +2,7 @@ import { join } from "path";
 import { existsSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, updateCandle, updateEvents, updateProjectConfig } from "../helper";
+import { cloneUmbrella, copyFolderSync, projectDir, readProjectConfig, templateDir, updateProjectConfig } from "../helper";
 import { info, log } from "../logger";
 
 addHelp('new', `Create a new project.
@@ -52,9 +52,8 @@ export async function newCmd(projectTitle: string, modId?: string) {
     };
     updateProjectConfig(newProjectConfigPath, newProjectConfig);
 
-    // Update candle and events
-    updateCandle(projectPath);
-    await updateEvents(projectPath);
+    // Update Umbrella
+    cloneUmbrella(projectPath);
 
     // Done
     info(`The project '${projectTitle}' has been created at '${projectPath}'`);

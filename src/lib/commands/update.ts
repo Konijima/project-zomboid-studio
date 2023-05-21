@@ -1,5 +1,5 @@
 import { addHelp } from "../help";
-import { projectDir, readProjectConfig, updateCandle, updateEvents } from "../helper";
+import { cloneUmbrella, projectDir, readProjectConfig } from "../helper";
 import { warn } from "../logger";
 
 addHelp('update', `Update your project addons (candle, events).
@@ -25,12 +25,6 @@ export async function updateCmd() {
         return;
     }
 
-    // Update candle
-    updateCandle(projectDir());
-    
-    // Update LuaEvents
-    await updateEvents(projectDir());
-
-    // Update project
-    // log(`Updating project...`);
+    // clone Umbrella
+    cloneUmbrella(projectDir());
 }

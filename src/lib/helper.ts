@@ -127,42 +127,25 @@ export function getOutDir() {
 }
 
 /**
- * Clone the candle repository
+ * Clone the Umbrella repository
  * @see https://github.com/asledgehammer/Candle
  * @param directoryPath The directory path
  */
-export function updateCandle(directoryPath?: string) {
-    log(`- Cloning candle...`);
+export function cloneUmbrella(directoryPath?: string) {
+    log(`- Cloning Umbrella...`);
     
     rmSync(join(directoryPath, '.libraries', 'candle'), { recursive: true, force: true });
     
-    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', join('.libraries', 'candle')], {
+    const cloneResult = spawnSync('git', ['clone', '--recursive', 'https://github.com/asledgehammer/Umbrella.git', join('.libraries')], {
         cwd: directoryPath,
         shell: true, 
         stdio: 'pipe'
     });
     if (cloneResult.status !== 0) {
-        error(`Failed to clone Candle!`);
+        error(`Failed to clone Umbrella!`);
     }
-}
+    // git clone --recursive https://github.com/asledgehammer/Umbrella.git
 
-/**
- * Update the event documentation
- * @see https://github.com/demiurgeQuantified/PZEventDoc
- * @param directoryPath The directory path
- */
-export async function updateEvents(directoryPath?: string) {
-    log(`- Downloading Events...`);
-
-    try {
-        mkdirSync(join(directoryPath, '.libraries'), { recursive: true });
-        rmSync(join(directoryPath, '.libraries', 'events'), { recursive: true, force: true });
-
-        await require('download')('https://github.com/demiurgeQuantified/PZEventDoc/releases/latest/download/Events.lua', join(directoryPath, '.libraries', 'events'));
-    }
-    catch (err) {
-        error(`Failed to download Events!`);
-    }
 }
 
 /**
