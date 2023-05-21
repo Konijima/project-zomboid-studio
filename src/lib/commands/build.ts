@@ -1,8 +1,8 @@
 import { join } from "path";
-import { cpSync, mkdirSync, writeFileSync } from "fs";
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
-import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
-import { log } from "../logger";
+import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig, templateDir } from "../helper";
+import { error, info, log, warn } from "../logger";
 
 addHelp('build', `Build your project and update your output directory with your project.
 
@@ -21,43 +21,43 @@ export async function buildCmd() {
 
     const outPath = join(getOutDir(), projectConfig.title);
     const projectPath = projectDir();
+    const templateWorkshopPath = templateDir('workshop');
 
-    // Copy the workshop preview.png
-    log(`Copying workshop 'preview.png'...`)
-    cpSync(join(projectDir(), 'workshop', 'preview.png'), join(outPath, 'preview.png'));
+    // Remove the output directory
+    rmSync(outPath, { recursive: true, force: true });
 
-    // Generate the workshop.txt
-    log(`Generating 'workshop.txt'...`);
-    writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
+    // Create the output directory
+    mkdirSync(outPath, { recursive: true });
+
+    // Copy the workshop template
+    copyFolderSync(templateWorkshopPath, outPath, true);
 
     // Copy the mods
     for (const modId of Object.keys(projectConfig.mods).filter(modId => !projectConfig.workshop.excludes.includes(modId))) {
-        const mod = projectConfig.mods[modId];
-        
-        // Create the mod directory
-        const modPath = join(outPath, 'Contents', 'mods', modId);
-        mkdirSync(modPath, { recursive: true });
+        // Copy the mod
+        const outModsPath = join(outPath, 'Contents', 'mods', modId)
+        log(`- Copying mod '${modId}'...`);
+        copyFolderSync(join(projectPath,  modId), outModsPath, true);
 
         // Generate the mod.info
-        log(`Generating mod '${modId}' mod.info...`);
-        writeFileSync(join(modPath, 'mod.info'), generateModInfoText(modId, projectConfig));
-
-        // Copy the mod
-        log(`Copying mod '${modId}' media...`);
-        copyFolderSync(join(projectPath, 'mods', modId), modPath, true)
-
-        // Copy the lua
-        log(`Copying mod '${modId}' lua...`);
-        const luaPath = join(modPath, 'media', 'lua');
-        copyFolderSync(join(projectPath, 'lua', 'client', modId), join(luaPath, 'client', modId), true);
-        copyFolderSync(join(projectPath, 'lua', 'server', modId), join(luaPath, 'server', modId), true);
-        copyFolderSync(join(projectPath, 'lua', 'shared', modId), join(luaPath, 'shared', modId), true);
-
-        // Copy the translations
-        log(`Copying mod '${modId}' translations...`);
-        copyFolderSync(join(projectPath, 'translations', modId), join(modPath, 'media', 'lua', 'shared', 'Translate'), true);
+        log(`- Generating '${modId}' mod.info...`);
+        writeFileSync(join(outModsPath, 'mod.info'), generateModInfoText(modId, projectConfig));
     }
 
+    // Copy the workshop preview.png
+    const projectPreviewPath = join(projectPath, 'workshop', 'preview.png');
+    if (existsSync(projectPreviewPath)) {
+        log(`- Copying workshop 'preview.png'...`)
+        cpSync(join(projectDir(), 'workshop', 'preview.png'), join(outPath, 'preview.png'));
+    }
+    else {
+        warn(`- No workshop 'preview.png' found as '${projectPreviewPath}'...`);
+    }
+
+    // Generate the workshop.txt
+    log(`- Generating 'workshop.txt'...`);
+    writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
+
     const endTime = performance.now();
-    log(`Build complete in ${((endTime - startTime) / 1000).toFixed(2)}s!`);
+    info(`Build complete in ${((endTime - startTime) / 1000).toFixed(2)}s!`);
 }

@@ -1,12 +1,11 @@
 {
   "name": "pzstudio",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "",
   "main": "./dist/index.js",
   "type": "commonjs",
   "bin": {
-    "pzstudio": "./dist/index.js",
-    "pzs": "./dist/index.js"
+    "pzstudio": "./dist/index.js"
   },
   "publishConfig": {
     "tag": "latest"
@@ -20,6 +19,11 @@
   },
   "author": "Konijima",
   "contributors": [
+    {
+      "name": "asledgehammer",
+      "email": "asledgehammer@protonmail.com",
+      "url": "https://github.com/asledgehammer"
+    },
     {
       "name": "asledgehammer",
       "email": "asledgehammer@protonmail.com",

@@ -1,9 +1,9 @@
-import { watch } from "chokidar";
+import { WatchOptions, watch } from "chokidar";
 import { dirname, join, resolve, sep } from "path";
-import { copyFileSync, mkdirSync, rmSync } from "fs";
+import { copyFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
-import { copyFolderSync, getOutDir, projectDir, readProjectConfig } from "../helper";
-import { error, log } from '../logger'
+import { copyFolderSync, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
+import { error, info, log } from '../logger'
 
 addHelp('watch', `Watch your project and update your output directory with your project.
 
@@ -11,423 +11,168 @@ addHelp('watch', `Watch your project and update your output directory with your 
         pzstudio watch - Watch your project and update your output directory with your project.`);
 
 export async function watchCmd() {
+    const projectPath = projectDir();
     const projectConfig = readProjectConfig();
-
+    
     // Check if we are in a project directory
     if (!projectConfig) {
         throw new Error('You must execute this command within a project directory!');
     }
     
     const outPath = join(getOutDir(), projectConfig.title);
-    const projectPath = projectDir();
     
-    const watcherOptions = {
+    const watcherOptions: WatchOptions = {
         cwd: projectPath,
-        ignored: "**/.*",
+        ignored: [
+            "**/.*",
+            "node_modules",
+            "package.json",
+            "package-lock.json",
+            "**/*.lock",
+            "**/*.log",
+        ],
     };
     
     // Watch Lua directory
-    let luaReady = false;
-    watch(join(projectDir(), 'lua'), watcherOptions)
+    let ready = false;
+    watch(join(projectDir()), watcherOptions)
         .on('ready', () => {
-            luaReady = true;
-            log(`Watching 'lua' directory for changes...`);
+            ready = true;
+            log(`Watching project directory for changes...`);
         })
+
+        // on file added
         .on('add', (path) => {
-            if (!luaReady) return;
+            if (!ready) return;
 
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been added...'\n`);
+            const changePath = path.replace(resolve(projectPath), resolve(path));
+            info(`File '${changePath}' has been created...'`);
 
             const split = changePath.split(sep)
-            const dir = split[1] as 'client' | 'server' | 'shared';
-            const modId = split[2];
-            const file = split.slice(3).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const luaPath = join(modPath, 'media', 'lua');
+            const modId = split[0];
+            const file = split.slice(1).join(sep);
 
-            const projectFile = join(projectPath, 'lua', dir, modId, file);
-            const modFile = join(luaPath, dir, modId, file);
-            
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
+            if (projectConfig.mods[modId] && !projectConfig.workshop.excludes.includes(modId)) {
+                const modFile = join(outPath, 'Contents', 'mods', modId, file);
+                try {
+                    log(`- Copying '${modFile}'...`);
+                    mkdirSync(dirname(modFile), { recursive: true });
+                    copyFileSync(changePath, modFile);
+                }
+                catch(err) {
+                    error(err);
+                }
             }
-            catch(err) {
-                // error(err);
+            else if (modId === "workshop") {
+                
             }
         })
+
+        // on file changed
         .on('change', (path) => {
-            if (!luaReady) return;
+            if (!ready) return;
 
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as changed...'\n`);
+            const changePath = path.replace(resolve(projectPath), resolve(path));
+            info(`File '${changePath} has changed...'`);
 
             const split = changePath.split(sep)
-            const dir = split[1] as 'client' | 'server' | 'shared';
-            const modId = split[2];
-            const file = split.slice(3).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const luaPath = join(modPath, 'media', 'lua');
+            const modId = split[0];
+            const file = split.slice(1).join(sep);
 
-            const projectFile = join(projectPath, 'lua', dir, modId, file);
-            const modFile = join(luaPath, dir, modId, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
+            if (projectConfig.mods[modId] && !projectConfig.workshop.excludes.includes(modId)) {
+                const modFile = join(outPath, 'Contents', 'mods', modId, file);
+                try {
+                    log(`- Copying '${modFile}'...`);
+                    mkdirSync(dirname(modFile), { recursive: true });
+                    copyFileSync(changePath, modFile);
+                }
+                catch(err) {
+                    error(err);
+                }
             }
-            catch(err) {
-                // error(err);
+            else if (modId === "workshop") {
+                log(`- Re-generating 'workshop.txt'...`);
+                writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
             }
         })
+
+        // on file deleted
         .on('unlink', (path) => {
-            if (!luaReady) return;
-            
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been removed...'\n`);
+            if (!ready) return;
+
+            const changePath = path.replace(resolve(projectPath), resolve(path));
+            info(`File '${changePath} has been deleted...'`);
 
             const split = changePath.split(sep)
-            const dir = split[1] as 'client' | 'server' | 'shared';
-            const modId = split[2];
-            const file = split.slice(3).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const luaPath = join(modPath, 'media', 'lua');
+            const modId = split[0];
+            const file = split.slice(1).join(sep);
 
-            const modFile = join(luaPath, dir, modId, file);
-
-            try {
-                rmSync(modFile);
+            if (projectConfig.mods[modId] && !projectConfig.workshop.excludes.includes(modId)) {
+                const modFile = join(outPath, 'Contents', 'mods', modId, file);
+                try {
+                    log(`- Deleting '${modFile}'...`);
+                    rmSync(modFile, { recursive: true, force: true });
+                }
+                catch(err) {
+                    error(err);
+                }
             }
-            catch(err) {
-                // error(err);
+            else if (modId === "workshop") {
+                
             }
         })
+
+        // on directory added
         .on('addDir', (path) => {
-            if (!luaReady) return;
+            if (!ready) return;
 
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been added...'\n`);
-            
+            const changePath = path.replace(resolve(projectPath), resolve(path));
+            info(`Directory '${changePath} has been created...'`);
+
             const split = changePath.split(sep)
-            const dir = split[1] as 'client' | 'server' | 'shared';
-            const modId = split[2];
-            const file = split.slice(3).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const luaPath = join(modPath, 'media', 'lua');
+            const modId = split[0];
+            const file = split.slice(1).join(sep);
 
-            const projectFile = join(projectPath, 'lua', dir, modId, file);
-            const modFile = join(luaPath, dir, modId, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFolderSync(projectFile, modFile, true);
+            if (projectConfig.mods[modId] && !projectConfig.workshop.excludes.includes(modId)) {
+                const modFile = join(outPath, 'Contents', 'mods', modId, file);
+                try {
+                    log(`- Creating '${modFile}'...`);
+                    mkdirSync(dirname(modFile), { recursive: true });
+                    copyFolderSync(changePath, modFile, true);
+                }
+                catch(err) {
+                    error(err);
+                }
             }
-            catch(err) {
-                // error(err);
+            else if (modId === "workshop") {
+                
             }
         })
+
+        // on directory deleted
         .on('unlinkDir', (path) => {
-            if (!luaReady) return;
+            if (!ready) return;
 
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been removed...'\n`);
-
-            const split = changePath.split(sep)
-            const dir = split[1] as 'client' | 'server' | 'shared';
-            const modId = split[2];
-            const file = split.slice(3).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const luaPath = join(modPath, 'media', 'lua');
-
-            const modFile = join(luaPath, dir, modId, file);
-
-            try {
-                rmSync(modFile, { recursive: true });
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('error', error);
-
-    // Watch Mods directory
-    let modsReady = false;
-    watch(join(projectDir(), 'mods'), watcherOptions)
-        .on('ready', () => {
-            modsReady = true;
-            log(`Watching 'mods' directory for changes...`);
-        })
-        .on('add', (path) => {
-            if (!modsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been added...'\n`);
+            const changePath = path.replace(resolve(projectPath), resolve(path));
+            info(`Directory '${changePath} has been deleted...'`);
 
             const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
+            const modId = split[0];
+            const file = split.slice(1).join(sep);
 
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(modPath, file);
-            
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
+            if (projectConfig.mods[modId] && !projectConfig.workshop.excludes.includes(modId)) {
+                const modFile = join(outPath, 'Contents', 'mods', modId, file);
+                try {
+                    log(`- Deleting '${modFile}'...`);
+                    rmSync(modFile, { recursive: true, force: true });
+                }
+                catch(err) {
+                    error(err);
+                }
             }
-            catch(err) {
-                // error(err);
+            else if (modId === "workshop") {
+                
             }
-        })
-        .on('change', (path) => {
-            if (!modsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as changed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(modPath, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('unlink', (path) => {
-            if (!modsReady) return;
-            
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been removed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-
-            const modFile = join(modPath, file);
-
-            try {
-                rmSync(modFile);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('addDir', (path) => {
-            if (!modsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been added...'\n`);
-            
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(modPath, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFolderSync(projectFile, modFile, true);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('unlinkDir', (path) => {
-            if (!modsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been removed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-
-            const modFile = join(modPath, file);
-
-            try {
-                rmSync(modFile, { recursive: true });
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('error', error);
-        
-
-    // Watch Translations directory
-    let translationsReady = false;
-    watch(join(projectDir(), 'translations'), watcherOptions)
-        .on('ready', () => {
-            translationsReady = true;
-            log(`Watching 'translations' directory for changes...`);
-        })
-        .on('add', (path) => {
-            if (!translationsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been added...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const translatePath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(translatePath, file);
-            
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('change', (path) => {
-            if (!translationsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as changed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const translatePath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(translatePath, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFileSync(projectFile, modFile);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('unlink', (path) => {
-            if (!translationsReady) return;
-            
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as been removed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const translatePath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-
-            const modFile = join(translatePath, file);
-
-            try {
-                rmSync(modFile);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('addDir', (path) => {
-            if (!translationsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been added...'\n`);
-            
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const translatePath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-
-            const projectFile = join(projectPath, changePath);
-            const modFile = join(translatePath, file);
-
-            try {
-                mkdirSync(dirname(modFile), { recursive: true });
-                copyFolderSync(projectFile, modFile, true);
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('unlinkDir', (path) => {
-            if (!translationsReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`Directory '${changePath} as been removed...'\n`);
-
-            const split = changePath.split(sep)
-            const modId = split[1];
-            const file = split.slice(2).join(sep);
-            const modPath = join(outPath, 'Contents', 'mods', modId);
-            const translatePath = join(modPath, 'media', 'lua', 'shared', 'Translate');
-
-            const modFile = join(translatePath, file);
-
-            try {
-                rmSync(modFile, { recursive: true });
-            }
-            catch(err) {
-                // error(err);
-            }
-        })
-        .on('error', error);
-
-    // Watch Workshop directory
-    let workshopReady = false;
-    watch(join(projectDir(), 'workshop'), watcherOptions)
-        .on('ready', () => {
-            workshopReady = true;
-            log(`Watching 'workshop' directory for changes...`);
-        })
-        .on('change', (path) => {
-            if (!workshopReady) return;
-
-            const changePath = path.replace(resolve(projectDir()), resolve(path));
-            log(`File '${changePath} as changed...'\n`);
-
-            const split = changePath.split(sep)
-            const file = split[1];
-
-            if (file === 'description.txt') {
-                // regenerate workshop.txt
-            }
-            else if (file === 'license.txt') {
-                // copy license.txt
-            }
-            else if (file === 'preview.png') {
-                // copy preview.png
-            }
-        })
-        .on('error', error);
-
-    // Watch Project.json
-    let projectReady = false;
-    watch(join(projectDir(), 'project.json'), watcherOptions)
-        .on('ready', () => {
-            projectReady = true;
-            log(`Watching 'project.json' for changes...`);
-        })
-        .on('change', (path) => {
-            if (!projectReady) return;
-
-            log(`Project config as changed...'\n`);
-            // regenerate workshop.txt
-            // regenerate mod.info
         })
         .on('error', error);
 }

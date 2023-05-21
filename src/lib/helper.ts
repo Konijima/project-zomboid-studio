@@ -4,7 +4,7 @@ import { spawnSync } from "child_process";
 import { dirname, join, resolve } from "path";
 import { copyFileSync, createWriteStream, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, statSync, writeFileSync } from "fs";
 import { IProjectConfig } from "./project";
-import { error, log } from "./logger";
+import { error, info, log } from "./logger";
 
 /**
  * Returns the current project working directory
@@ -26,16 +26,8 @@ export function workingDir() {
  * Returns the template directory
  * @returns {string} The template directory
  */
-export function templateDir() {
-    return join(dirname(__dirname), '../', '.template');
-}
-
-/**
- * Returns the templates directory
- * @returns {string} The templates directory
- */
-export function templatesDir() {
-    return join(dirname(__dirname), '../', '.templates');
+export function templateDir(template: 'language' | 'mod' | 'project' | 'workshop') {
+    return join(dirname(__dirname), '../', `.template-${template}`);
 }
 
 /**
@@ -140,20 +132,17 @@ export function getOutDir() {
  * @param directoryPath The directory path
  */
 export function updateCandle(directoryPath?: string) {
-    log(`Updating candle...`);
+    log(`- Cloning candle...`);
     
-    rmSync(join(directoryPath, '.addons', 'candle'), { recursive: true, force: true });
+    rmSync(join(directoryPath, '.libraries', 'candle'), { recursive: true, force: true });
     
-    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', join('.addons', 'candle')], {
+    const cloneResult = spawnSync('git', ['clone', 'https://github.com/asledgehammer/Candle', join('.libraries', 'candle')], {
         cwd: directoryPath,
         shell: true, 
         stdio: 'pipe'
     });
     if (cloneResult.status !== 0) {
         error(`Failed to clone Candle!`);
-    }
-    else {
-        log(`Candle cloned successfully!`);
     }
 }
 
@@ -163,13 +152,17 @@ export function updateCandle(directoryPath?: string) {
  * @param directoryPath The directory path
  */
 export async function updateEvents(directoryPath?: string) {
-    log(`Updating Events...`);
+    log(`- Downloading Events...`);
 
-    mkdirSync(join(directoryPath, '.addons'), { recursive: true });
-    rmSync(join(directoryPath, '.addons', 'events'), { recursive: true, force: true });
+    try {
+        mkdirSync(join(directoryPath, '.libraries'), { recursive: true });
+        rmSync(join(directoryPath, '.libraries', 'events'), { recursive: true, force: true });
 
-    await require('download')('https://github.com/demiurgeQuantified/PZEventDoc/releases/latest/download/Events.lua', join(directoryPath, '.addons', 'events'));
-    log("Events downloaded successfully!");
+        await require('download')('https://github.com/demiurgeQuantified/PZEventDoc/releases/latest/download/Events.lua', join(directoryPath, '.libraries', 'events'));
+    }
+    catch (err) {
+        error(`Failed to download Events!`);
+    }
 }
 
 /**

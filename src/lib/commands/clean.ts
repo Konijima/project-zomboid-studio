@@ -23,7 +23,7 @@ export function cleanCmd() {
     const outPath = join(getOutDir(), projectConfig.title);
     if (existsSync(outPath)) {
         log(`Cleaning output directory at '${outPath}'...`);
-        rmSync(outPath, { recursive: true });
+        rmSync(outPath, { recursive: true, force: true });
     }
     else
         throw new Error(`Output directory at '${outPath}' does not exist!`);

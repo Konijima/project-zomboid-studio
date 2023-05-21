@@ -29,5 +29,5 @@ export function warn(message: any) {
  * @param error
  */
 export function error(error: any) {
-    terminal.red('\n', error);
+    terminal.red(error, '\n');
 }
