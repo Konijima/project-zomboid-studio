@@ -131,21 +131,19 @@ export function getOutDir() {
  * @see https://github.com/asledgehammer/Candle
  * @param directoryPath The directory path
  */
-export function cloneUmbrella(directoryPath?: string) {
-    log(`- Cloning Umbrella...`);
+export function installLibraries(directoryPath?: string) {
+    log(`- Deleting '.libraries'...`)
+    rmSync(join(directoryPath, '.libraries'), { recursive: true, force: true });
     
-    rmSync(join(directoryPath, '.libraries', 'candle'), { recursive: true, force: true });
-    
+    log(`- Cloning 'Umbrella' into '.libraries'...`);
     const cloneResult = spawnSync('git', ['clone', '--recursive', 'https://github.com/asledgehammer/Umbrella.git', join('.libraries')], {
         cwd: directoryPath,
         shell: true, 
         stdio: 'pipe'
     });
     if (cloneResult.status !== 0) {
-        error(`Failed to clone Umbrella!`);
+        error(`Failed to clone 'Umbrella'!`);
     }
-    // git clone --recursive https://github.com/asledgehammer/Umbrella.git
-
 }
 
 /**

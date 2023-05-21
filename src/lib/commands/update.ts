@@ -1,5 +1,5 @@
 import { addHelp } from "../help";
-import { cloneUmbrella, projectDir, readProjectConfig } from "../helper";
+import { installLibraries, projectDir, readProjectConfig } from "../helper";
 import { warn } from "../logger";
 
 addHelp('update', `Update your project addons (candle, events).
@@ -26,5 +26,5 @@ export async function updateCmd() {
     }
 
     // clone Umbrella
-    cloneUmbrella(projectDir());
+    installLibraries(projectDir());
 }
