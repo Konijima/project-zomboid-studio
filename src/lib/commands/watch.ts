@@ -1,6 +1,6 @@
 import { WatchOptions, watch } from "chokidar";
 import { dirname, join, resolve, sep } from "path";
-import { copyFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
 import { copyFolderSync, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
 import { error, info, log } from '../logger'
@@ -91,6 +91,14 @@ export async function watchCmd() {
                 }
             }
             else if (modId === "workshop") {
+                // Copy the workshop preview.png
+                const projectPreviewPath = join(projectPath, 'workshop', 'preview.png');
+                if (existsSync(projectPreviewPath)) {
+                    log(`- Copying workshop 'preview.png'...`)
+                    cpSync(projectPreviewPath, join(outPath, 'preview.png'));
+                }
+
+                // Generate the workshop.txt
                 log(`- Re-generating 'workshop.txt'...`);
                 writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
             }
