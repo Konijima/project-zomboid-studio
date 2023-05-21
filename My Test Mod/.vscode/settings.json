@@ -1,6 +1,0 @@
-{
-    "Lua.completion.requireSeparator": "/",
-    "Lua.workspace.library": [
-        "./.libraries/**/*.lua"
-    ]
-}
