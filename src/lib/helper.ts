@@ -36,7 +36,9 @@ export function templateDir(template: 'language' | 'mod' | 'project' | 'workshop
  */
 export function readProjectConfig(path?: string): IProjectConfig | undefined {
     try {
-        return require(path ?? join(projectDir(), 'project.json'));
+        const module = path ?? join(projectDir(), 'project.json');
+        delete require.cache[require.resolve(module)];
+        return require(module);
     }
     catch (err) {
         return;
