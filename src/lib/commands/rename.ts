@@ -1,8 +1,8 @@
 import { join } from "path";
-import { existsSync, readFileSync, renameSync, rmSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { copyFolderSync, formatTitleToId, getFilesRecursively, projectDir, readProjectConfig, updateProjectConfig } from "../helper";
+import { copyFolderSync, getFilesRecursively, projectDir, readProjectConfig, updateProjectConfig } from "../helper";
 import { log } from "../logger";
 
 addHelp('rename', `Rename a mod in your project.
@@ -22,9 +22,6 @@ export function renameCmd(oldModId: string, newModId: string) {
     // Validate params
     expect('param [oldModId]', oldModId, 'string');
     expect('param [newModId]', newModId, 'string');
-
-    // Prepare mod id
-    // newModId = newModId ?? formatTitleToId(newModId);
 
     // Check if old mod id already exists
     if (!projectConfig.mods[oldModId]) {

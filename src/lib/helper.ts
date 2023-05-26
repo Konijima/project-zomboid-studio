@@ -1,10 +1,9 @@
 import { homedir } from "os";
-import { request } from "https";
 import { spawnSync } from "child_process";
 import { dirname, join, resolve } from "path";
-import { copyFileSync, createWriteStream, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, statSync, writeFileSync } from "fs";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, statSync, writeFileSync } from "fs";
 import { IProjectConfig } from "./project";
-import { error, info, log } from "./logger";
+import { error, log } from "./logger";
 
 /**
  * Returns the current project working directory

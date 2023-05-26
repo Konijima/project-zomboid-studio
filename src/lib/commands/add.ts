@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { expect } from "../expect";
 import { addHelp } from "../help";
-import { copyFolderSync, formatTitleToId, projectDir, readProjectConfig, templateDir, updateProjectConfig } from "../helper";
+import { copyFolderSync, projectDir, readProjectConfig, templateDir, updateProjectConfig } from "../helper";
 import { log } from "../logger";
 
 addHelp('add', `Add a mod to your project.
