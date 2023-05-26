@@ -2,7 +2,7 @@ import { WatchOptions, watch } from "chokidar";
 import { dirname, join, resolve, sep } from "path";
 import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { addHelp } from "../help";
-import { copyFolderSync, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
+import { copyFolderSync, generateModInfoText, generateWorkshopText, getOutDir, projectDir, readProjectConfig } from "../helper";
 import { error, info, log } from '../logger'
 
 addHelp('watch', `Watch your project and update your output directory with your project.
@@ -12,7 +12,7 @@ addHelp('watch', `Watch your project and update your output directory with your 
 
 export async function watchCmd() {
     const projectPath = projectDir();
-    const projectConfig = readProjectConfig();
+    let projectConfig = readProjectConfig();
     
     // Check if we are in a project directory
     if (!projectConfig) {
@@ -45,6 +45,8 @@ export async function watchCmd() {
         .on('add', (path) => {
             if (!ready) return;
 
+            projectConfig = readProjectConfig();
+
             const changePath = path.replace(resolve(projectPath), resolve(path));
             info(`File '${changePath}' has been created...'`);
 
@@ -71,6 +73,8 @@ export async function watchCmd() {
         // on file changed
         .on('change', (path) => {
             if (!ready) return;
+
+            projectConfig = readProjectConfig();
 
             const changePath = path.replace(resolve(projectPath), resolve(path));
             info(`File '${changePath} has changed...'`);
@@ -108,6 +112,8 @@ export async function watchCmd() {
         .on('unlink', (path) => {
             if (!ready) return;
 
+            projectConfig = readProjectConfig();
+
             const changePath = path.replace(resolve(projectPath), resolve(path));
             info(`File '${changePath} has been deleted...'`);
 
@@ -133,6 +139,8 @@ export async function watchCmd() {
         // on directory added
         .on('addDir', (path) => {
             if (!ready) return;
+
+            projectConfig = readProjectConfig();
 
             const changePath = path.replace(resolve(projectPath), resolve(path));
             info(`Directory '${changePath} has been created...'`);
@@ -160,6 +168,8 @@ export async function watchCmd() {
         // on directory deleted
         .on('unlinkDir', (path) => {
             if (!ready) return;
+
+            projectConfig = readProjectConfig();
 
             const changePath = path.replace(resolve(projectPath), resolve(path));
             info(`Directory '${changePath} has been deleted...'`);
