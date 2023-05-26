@@ -106,6 +106,17 @@ export async function watchCmd() {
                 log(`- Re-generating 'workshop.txt'...`);
                 writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
             }
+            else if (modId === "project.json") {
+                // Generate the workshop.txt
+                log(`- Re-generating 'workshop.txt'...`);
+                writeFileSync(join(outPath, 'workshop.txt'), generateWorkshopText(projectConfig));
+
+                for (const modId of Object.keys(projectConfig.mods).filter(modId => !projectConfig.workshop.excludes.includes(modId))) {
+                    // Generate the mod.info
+                    log(`- Re-generating '${modId}' mod.info...`);
+                    writeFileSync(join(outPath, 'Contents', 'mods', modId, 'mod.info'), generateModInfoText(modId, projectConfig));
+                }
+            }
         })
 
         // on file deleted
