@@ -159,7 +159,7 @@ export function generateWorkshopText(config: IProjectConfig) {
     lines.push(`version=1`);
     if (config.workshop.id) lines.push(`id=${config.workshop.id}`);
     if (config.title) lines.push(`title=${config.title}`);
-    if (config.workshop.tags) lines.push(`tags=${config.workshop.tags.join(',')}`);
+    if (config.workshop.tags) lines.push(`tags=${config.workshop.tags.join(';')}`);
     if (config.workshop.visibility) lines.push(`visibility=${config.workshop.visibility}`);
 
     const workshopDescriptionPath = join(projectDir(), 'workshop', 'description.txt');
